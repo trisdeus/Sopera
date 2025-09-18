@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet" />
+    <title>Sopera - Search</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+      :root {
+        --primary-color: #ea2a33;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body class="bg-black">
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col bg-[#121212] dark justify-between group/design-root overflow-x-hidden"
+      style="font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif">
+      <div>
+        <div class="flex items-center bg-transparent p-4 pb-2 justify-between">
+          <button
+            class="text-white flex size-10 items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+            <a href="home.html">
+              <span class="material-symbols-outlined">
+                arrow_back_ios_new
+              </span>
+            </a>
+          </button>
+          <h1 class="text-white text-xl font-bold">Search</h1>
+          <div class="w-10"></div>
+        </div>
+        <div class="px-4 py-3">
+          <div class="relative flex items-center">
+            <input
+              class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-full text-white focus:outline-0 focus:ring-2 focus:ring-[var(--primary-color)] border-none bg-[#1F1F1F] h-12 placeholder:text-gray-400 px-12 text-base font-normal leading-normal"
+              placeholder="Search for titles, genres, actors"
+              value="" />
+            <div
+              class="absolute left-4 text-gray-400"
+              data-icon="MagnifyingGlass"
+              data-size="24px"
+              data-weight="regular">
+              <span class="material-symbols-outlined"> search </span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3 px-4 py-2 overflow-x-auto">
+          <button
+            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#1F1F1F] hover:bg-white/10 transition-colors px-4">
+            <p class="text-white text-sm font-medium">Genre</p>
+            <span class="material-symbols-outlined text-white">
+              expand_more
+            </span>
+          </button>
+          <button
+            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#1F1F1F] hover:bg-white/10 transition-colors px-4">
+            <p class="text-white text-sm font-medium">Release Date</p>
+            <span class="material-symbols-outlined text-white">
+              expand_more
+            </span>
+          </button>
+          <button
+            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#1F1F1F] hover:bg-white/10 transition-colors px-4">
+            <p class="text-white text-sm font-medium">Popularity</p>
+            <span class="material-symbols-outlined text-white">
+              expand_more
+            </span>
+          </button>
+        </div>
+        <h2 class="text-white text-xl font-bold px-4 pb-3 pt-6">
+          Browse by Category
+        </h2>
+        <div class="grid grid-cols-2 gap-4 p-4">
+          <div class="relative group cursor-pointer overflow-hidden rounded-md">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover transition-transform duration-300 group-hover:scale-105"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDdaqlh8MPQdKJjnJUI3L9-I9A4gvDKm23WWau60kxrZGOMcqq_UX7QgRh_z8iuIphxYNhZgfPrgESq0dDEZDbLu47tDg2HM717g2ob_nTQ0NeRT9I87XT4em6VEdpM1e0JmLvzWej8UyRZfUvMoWRasLNEHxerpHx6mWRIw2QRzB8tZIry8mLfk-OhDy-evsvgDnvB2S0SrxtxUneRArjBt79DIdOjaFrQTOnH_O5OMMRU8sLXx-MI_VfjHF4oj7QC8FtEI9N08luG');
+              "></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <p class="absolute bottom-3 left-3 text-white text-lg font-bold">
+              Comedy
+            </p>
+          </div>
+          <div class="relative group cursor-pointer overflow-hidden rounded-md">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover transition-transform duration-300 group-hover:scale-105"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFy271arR3DXf-ssYeebCoPsM6JTdf5yMHHPiepT9fRnU4yOgJDeY-l3tZO8L7n6Ayfvh-SpQct5xuIMCAyD7_wA9Hbbckp-cg6lFlEaU0ol-c-DR-KFa2H2nJLweQYt3Uk4NBJuXfV5DjCEq1u22WlojKbIlIIH8CcFNrptuD_xKpoEdti2cW4vAlXLRWvaAeAMpH8F7ZmisJxNqaNzqp-jVCOkO4XDPQ3QFfsTLGs5ai58boVmzi7ac3_SwbLHBHt11LEzverplS');
+              "></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <p class="absolute bottom-3 left-3 text-white text-lg font-bold">
+              Romance
+            </p>
+          </div>
+          <div class="relative group cursor-pointer overflow-hidden rounded-md">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover transition-transform duration-300 group-hover:scale-105"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAoEnccVvFw2tEd41d95LKfz_okr_bvVirsA6O_sVBDlQQwo9JaSu3ovT1zW4S-5TwPlIv3Z8WToBSRRSs96Hk7T4GjMwiRBweveyj8gjYCntGwITQTDw37m_tC3-D5I5aF8MCteucGd9mc0brknj-95B9ilztmC6w_l2e9zzXAW3jM09QVVXE2HqHGmwKfcyxII2XLdm472IUt5I3cS2GnYeVGq_H1Up92Lallxhq8lD_FNQ404a-EPbEOuuOhEbiJuKYlBCy6mrBV');
+              "></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <p class="absolute bottom-3 left-3 text-white text-lg font-bold">
+              Horror
+            </p>
+          </div>
+          <div class="relative group cursor-pointer overflow-hidden rounded-md">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover transition-transform duration-300 group-hover:scale-105"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuADg7w2DRwyH2xs6MstwkV_LIruebFTp7Vk_iG6SMEmgR_-6rEzZhXajkC1cgOm6Fr9M83wVwQY6_nka2MsljuCl41rob2YPo_juAmJXVftyxNjagmN3pm6achSNf_JB1wUgE-5A0QRf9Gr_88jxZpH4icajzkTUYVTMiE0rsCCxbfphMb6JlUWw8TK6J7bCoM-yjXNhkJNFIRrtJkrC6hRSqgz6ZpMp1dt46K3z27A0a9iPtL6NKEfl1ZPwF0jmYgbXrNDo2v0jWuL');
+              "></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <p class="absolute bottom-3 left-3 text-white text-lg font-bold">
+              Drama
+            </p>
+          </div>
+          <div class="relative group cursor-pointer overflow-hidden rounded-md">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover transition-transform duration-300 group-hover:scale-105"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAFxg-LXa72xJuws9yggtFFPrS5dkhl1UIUkSUkDhk3ceSSGElT8GBwUXhx8-nPn-8f4xNDjSxbPBJdVIx-OX_iYJqrg_oD_1E4d16S9W_Wb7dOjcxW1pah2T77TcNME252ryrEfP4ny4M1y7GS5Q9-2zIlPw3_8OrCjjy7LuDu5OM9lm6xGSL_WDClIcI4bAm6dVGD2RzrCN7FNZ7Kp3naetTUjOjKCg0ZguELOS4hBGB9FogyB2Y1Wi-ut6sKYs1n8lwRni39x165');
+              "></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <p class="absolute bottom-3 left-3 text-white text-lg font-bold">
+              Action
+            </p>
+          </div>
+          <div class="relative group cursor-pointer overflow-hidden rounded-md">
+            <div
+              class="w-full bg-center bg-no-repeat aspect-[3/4] bg-cover transition-transform duration-300 group-hover:scale-105"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCSYPZncNxP2YB-ZDKm4Y2ZpsOoyXmn_sxB-T9UuOLZI_rbU-34LxnIGwLsF5lYpadtSy9lF8Jhb0dao9Itex028W6SrPTs8awTqoErc66G8LeeQEQXGl2jr62qjL-N_puGvCUNPJZ_mJnR3GiEFO-_eOi5kJ-RPvkG9Fbui2nGRgHc-dfsFKvzIujYTbdZUuH99sqpK2gjHQg8gdPDYL-9ICPwjvtZziTUvZTV_owk5UpoS_V8SVbyhN5j5eRZ6we9JyE9TqEmTsC');
+              "></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <p class="absolute bottom-3 left-3 text-white text-lg font-bold">
+              Thriller
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer
+      class="sticky bottom-0 bg-[#121212]/80 backdrop-blur-sm border-t border-white/10">
+      <div class="flex justify-around items-center h-20 text-gray-400">
+        <a
+          class="flex flex-col items-center gap-1 hover:text-white transition-colors"
+          href="home.html">
+          <span class="material-symbols-outlined text-3xl"> home </span>
+          <span class="text-xs font-semibold">Home</span>
+        </a>
+        <a
+          class="flex flex-col items-center gap-1 text-[var(--primary-color)]"
+          href="search.html">
+          <span class="material-symbols-outlined text-3xl"> search </span>
+          <span class="text-xs font-semibold">Search</span>
+        </a>
+        <a
+          class="flex flex-col items-center gap-1 hover:text-white transition-colors"
+          href="profile.html">
+          <span class="material-symbols-outlined text-3xl">
+            account_circle
+          </span>
+          <span class="text-xs font-semibold">Profile</span>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
