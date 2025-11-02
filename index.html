@@ -1,104 +1,391 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
-    <meta charset="utf-8" />
-    <meta charset="utf-8" />
-    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
-    <link
-      as="style"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B700%3B800"
-      onload="this.rel='stylesheet'"
-      rel="stylesheet" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
-      rel="stylesheet" />
-    <title>Sopera - Watch Addictive Indonesian Dramas</title>
-    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <style type="text/tailwindcss">
-      :root {
-        --primary-color: #ea2a33;
-      }
-    </style>
-    <style>
-      body {
-        min-height: max(884px, 100dvh);
-      }
-    </style>
-    <style>
-      body {
-        min-height: max(884px, 100dvh);
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sopera - Streaming Platform Indonesia</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="bg-[#100A0A]">
-    <div
-      class="relative flex h-auto min-h-screen w-full flex-col bg-[#100A0A] dark justify-between group/design-root overflow-x-hidden"
-      style="font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif">
-      <div class="flex flex-col flex-grow">
-        <div class="@container">
-          <div class="relative">
-            <div
-              class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden min-h-[55vh]"
-              style="
-                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTBSItUijKQMvn-J9Kv4771ufG7_EWhB0DPOoZDYL7VOver7ioCPhDi6yeXuXr34LgDfdIGBf1AUzjI-wyTXuOaYzBJLI-eNhfCqx1LKJpvqEEeuAFQuVHkk0WnKOzdjHCu1pqSjQ7X3lwp5hhvHnTxnfMnaCn5B3zq3iNvUXqqe2w66mBpYVBgif8zkachRXQAQs-pVC-gkbXNdLC8Bq3lWR3Mq6ERnDR_jOn5Pae2-wdIhzrRUyU0hWYp_b0fspGae8VXP2Dv0Vn');
-              ">
-              <div
-                class="absolute inset-0 bg-gradient-to-t from-[#100A0A] via-[#100A0A]/60 to-transparent"></div>
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">SOPERA</div>
+      <div class="header-actions">
+        <svg class="search-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+        </svg>
+        <svg class="notif-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+        </svg>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Library Tab -->
+      <div class="library-section" id="libraryTab">
+        <!-- Hero Section -->
+        <div class="hero-section">
+          <video class="hero-video" autoplay muted loop>
+            <source
+              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+              type="video/mp4" />
+          </video>
+          <div class="hero-overlay">
+            <div class="hero-title">Cinta di Musim Hujan</div>
+            <div class="hero-description">
+              Kisah romantis tentang dua insan yang dipertemukan saat musim
+              hujan. Drama romantis yang penuh dengan konflik dan perasaan
+              mendalam.
+            </div>
+            <div class="hero-actions">
+              <button class="btn-play" onclick="openVideoModal(0)">
+                <span>▶</span> Putar
+              </button>
+              <button class="btn-info">ℹ Info</button>
             </div>
           </div>
         </div>
-        <div class="px-6 -mt-16 relative z-10 text-center">
-          <div
-            class="inline-block bg-[var(--primary-color)] text-white font-bold text-3xl rounded-full px-4 py-2 mb-4">
-            Sopera
-          </div>
-          <h1
-            class="text-white text-3xl font-bold leading-tight drop-shadow-lg">
-            Watch addictive Indonesian dramas, 1 minute at a time.
-          </h1>
+        <!-- Content Sections -->
+        <div class="content-section">
+          <div class="section-title">Untuk Kamu</div>
+          <div class="movie-row" id="forYouRow"></div>
+          <div class="section-title">Romantis</div>
+          <div class="movie-row" id="romanceRow"></div>
+          <div class="section-title">Drama</div>
+          <div class="movie-row" id="dramaRow"></div>
+          <div class="section-title">Horor</div>
+          <div class="movie-row" id="horrorRow"></div>
+          <div class="section-title">Slice of Life</div>
+          <div class="movie-row" id="sliceOfLifeRow"></div>
         </div>
-        <div class="flex-grow flex flex-col justify-end px-6 pt-8 pb-4">
-          <div class="flex flex-col gap-4">
-            <button
-              class="flex w-full items-center justify-center gap-3 rounded-xl h-14 px-5 bg-white/10 text-white text-base font-semibold leading-normal tracking-wide backdrop-blur-sm hover:bg-white/20 transition-colors"
-              onclick="window.location.href='pages/home.html'">
-              <svg
-                class="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
+      </div>
+      <!-- Short Form Tab -->
+      <div class="short-form-section" id="shortFormTab">
+        <div class="short-form-container" id="shortFormContainer"></div>
+      </div>
+      <!-- Accounts Tab -->
+      <div class="accounts-section" id="accountsTab">
+        <div class="profile-header">
+          <div class="profile-avatar">A</div>
+          <div class="profile-info">
+            <h2>Akun Saya</h2>
+            <p>user@sopera.id</p>
+          </div>
+        </div>
+        <div class="menu-section">
+          <div class="menu-title">Langganan</div>
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
                 <path
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"></path>
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
               </svg>
-              <span class="truncate">Continue with Email</span>
-            </button>
-            <button
-              class="flex w-full items-center justify-center gap-3 rounded-xl h-14 px-5 bg-white text-black text-base font-bold leading-normal tracking-wide hover:bg-gray-200 transition-colors">
-              <img
-                class="h-6 w-6"
-                src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" />
-              <span class="truncate">Continue with Google</span>
-            </button>
+              <span class="menu-label">Paket Premium</span>
+            </div>
+            <div class="subscription-badge">Aktif</div>
+          </div>
+        </div>
+        <div class="menu-section">
+          <div class="menu-title">Pengaturan</div>
+          <div class="menu-item" onclick="switchTab('settings', this)">
+            <div class="menu-item-left">
+              <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94L14.4 2.81c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+              </svg>
+              <span class="menu-label">Pengaturan Umum</span>
+            </div>
+            <svg class="menu-arrow" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </div>
+          <div class="menu-item" onclick="switchTab('privacy', this)">
+            <div class="menu-item-left">
+              <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+              </svg>
+              <span class="menu-label">Privasi & Keamanan</span>
+            </div>
+            <svg class="menu-arrow" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </div>
+          <div class="menu-item" onclick="switchTab('payment', this)">
+            <div class="menu-item-left">
+              <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 9h-4v4h4v4l5-5-5-5v4zm5-4v10h-2V7h2z" />
+              </svg>
+              <span class="menu-label">Pembayaran</span>
+            </div>
+            <svg class="menu-arrow" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </div>
+          <div class="menu-item" onclick="switchTab('about', this)">
+            <div class="menu-item-left">
+              <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              <span class="menu-label">Tentang Aplikasi</span>
+            </div>
+            <svg class="menu-arrow" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </div>
+          <div class="menu-item" onclick="switchTab('help', this)">
+            <div class="menu-item-left">
+              <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+              </svg>
+              <span class="menu-label">Bantuan & Dukungan</span>
+            </div>
+            <svg class="menu-arrow" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </div>
+        </div>
+        <div class="menu-section">
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+              </svg>
+              <span class="menu-label">Keluar</span>
+            </div>
+            <svg class="menu-arrow" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </div>
       </div>
-      <div class="px-6 pb-6 pt-2 text-center">
-        <p class="text-[#A38D8D] text-xs font-normal leading-normal">
-          By continuing, you agree to our
-          <a class="font-medium text-white/90 underline" href="#"
-            >Terms of Service</a
-          >
-          and
-          <a class="font-medium text-white/90 underline" href="#"
-            >Privacy Policy</a
-          >.
-        </p>
+
+      <!-- New Settings Tab -->
+      <div class="settings-section" id="settingsTab" style="display: none">
+        <div class="section-header">
+          <h2>Pengaturan Umum</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Bahasa</div>
+            <select class="setting-control">
+              <option>Bahasa Indonesia</option>
+              <option>English</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Tema</div>
+            <select class="setting-control">
+              <option>Terang</option>
+              <option>Gelap</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Kualitas Video Otomatis</div>
+            <label class="switch">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Notifikasi</div>
+            <label class="switch">
+              <input type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Privacy Tab -->
+      <div class="settings-section" id="privacyTab" style="display: none">
+        <div class="section-header">
+          <h2>Privasi & Keamanan</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Data Pribadi</div>
+            <div class="setting-description">
+              Kelola informasi pribadi yang dikumpulkan.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Kontak</div>
+            <div class="setting-description">
+              Atur siapa yang bisa menemukan Anda.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Riwayat Aktivitas</div>
+            <div class="setting-description">Lihat dan hapus riwayat Anda.</div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Ubah Kata Sandi</div>
+            <div class="setting-description">
+              Perbarui kata sandi akun Anda.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Payment Tab -->
+      <div class="settings-section" id="paymentTab" style="display: none">
+        <div class="section-header">
+          <h2>Pembayaran</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Metode Pembayaran</div>
+            <div class="setting-description">
+              Tambah atau ubah metode pembayaran Anda.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Riwayat Transaksi</div>
+            <div class="setting-description">
+              Lihat semua pembayaran yang telah dilakukan.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Promo & Kode</div>
+            <div class="setting-description">
+              Gunakan kode promo atau kupon.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New About Tab -->
+      <div class="settings-section" id="aboutTab" style="display: none">
+        <div class="section-header">
+          <h2>Tentang Aplikasi</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Versi Aplikasi</div>
+            <div class="setting-description">v1.0.0</div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Kebijakan Privasi</div>
+            <div class="setting-description">Lihat kebijakan privasi kami.</div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Syarat & Ketentuan</div>
+            <div class="setting-description">
+              Lihat syarat dan ketentuan penggunaan.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Kontak Pengembang</div>
+            <div class="setting-description">Hubungi tim pengembang.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Help Tab -->
+      <div class="settings-section" id="helpTab" style="display: none">
+        <div class="section-header">
+          <h2>Bantuan & Dukungan</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Pusat Bantuan</div>
+            <div class="setting-description">
+              Cari jawaban untuk pertanyaan umum.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Hubungi Kami</div>
+            <div class="setting-description">
+              Kirimkan pertanyaan atau masukan Anda.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Laporkan Masalah</div>
+            <div class="setting-description">
+              Beri tahu kami tentang bug atau kesalahan.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+      <div class="modal-header">
+        <div class="logo">SOPERA</div>
+        <button class="modal-close" onclick="closeVideoModal()">×</button>
+      </div>
+      <div class="modal-video-container">
+        <video class="modal-video" id="modalVideo" controls></video>
+      </div>
+      <div class="modal-info">
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-meta">
+          <span id="modalYear"></span>
+          <span>•</span>
+          <span id="modalGenre"></span>
+          <span>•</span>
+          <span id="modalDuration"></span>
+        </div>
+        <div class="modal-description" id="modalDescription"></div>
+        <div class="modal-actions">
+          <div class="action-btn" onclick="toggleLike()">
+            <div class="action-btn-icon" id="likeIcon">👍</div>
+            <div class="action-btn-label">Suka</div>
+          </div>
+          <div class="action-btn" onclick="toggleDislike()">
+            <div class="action-btn-icon" id="dislikeIcon">👎</div>
+            <div class="action-btn-label">Tidak Suka</div>
+          </div>
+          <div class="action-btn" onclick="shareVideo()">
+            <div class="action-btn-icon">🔗</div>
+            <div class="action-btn-label">Bagikan</div>
+          </div>
+        </div>
+        <div class="comments-section">
+          <div class="comments-title">Komentar</div>
+          <div class="comment-form">
+            <input
+              type="text"
+              class="comment-input"
+              placeholder="Tulis komentar..."
+              id="commentInput" />
+            <button class="comment-submit" onclick="addComment()">Kirim</button>
+          </div>
+          <div id="commentsList"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+      <div class="tab-item" onclick="switchTab('library', this)">
+        <svg class="tab-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z" />
+        </svg>
+        <span>Library</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('shortForm', this)">
+        <svg class="tab-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        <span>Short Form</span>
+      </div>
+      <div class="tab-item" onclick="switchTab('accounts', this)">
+        <svg class="tab-icon" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+        </svg>
+        <span>Akun</span>
+      </div>
+    </div>
+    <script src="main.js"></script>
   </body>
 </html>
