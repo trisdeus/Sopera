@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,9 +9,13 @@
   <body>
     <!-- Header -->
     <div class="header">
-      <div class="logo">SOPERA</div>
+      <img src="logo.png" alt="SOPERA" class="logo" />
       <div class="header-actions">
-        <svg class="search-icon" fill="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="search-icon"
+          onclick="toggleSearch()"
+          fill="currentColor"
+          viewBox="0 0 24 24">
           <path
             d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
         </svg>
@@ -21,6 +25,20 @@
         </svg>
       </div>
     </div>
+
+    <!-- Search panel (hidden by default) -->
+    <div id="searchPanel" class="search-panel hidden" aria-hidden="true">
+      <div class="search-box">
+        <input
+          id="searchInput"
+          class="search-input"
+          type="search"
+          placeholder="Cari film, genre, tahun..." />
+        <button class="search-close" onclick="closeSearch()">×</button>
+      </div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+
     <!-- Main Content -->
     <div class="main-content">
       <!-- Library Tab -->
@@ -76,7 +94,7 @@
         </div>
         <div class="menu-section">
           <div class="menu-title">Langganan</div>
-          <div class="menu-item">
+          <div class="menu-item" onclick="switchTab('premium', this)">
             <div class="menu-item-left">
               <svg class="menu-icon" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -182,7 +200,7 @@
           <div class="setting-item">
             <div class="setting-label">Tema</div>
             <select class="setting-control">
-              <option>Terang</option>
+              <option selected>Terang</option>
               <option>Gelap</option>
             </select>
           </div>
@@ -211,25 +229,15 @@
         <div class="settings-content">
           <div class="setting-item">
             <div class="setting-label">Data Pribadi</div>
-            <div class="setting-description">
-              Kelola informasi pribadi yang dikumpulkan.
-            </div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Kontak</div>
-            <div class="setting-description">
-              Atur siapa yang bisa menemukan Anda.
-            </div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Riwayat Aktivitas</div>
-            <div class="setting-description">Lihat dan hapus riwayat Anda.</div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Ubah Kata Sandi</div>
-            <div class="setting-description">
-              Perbarui kata sandi akun Anda.
-            </div>
           </div>
         </div>
       </div>
@@ -242,21 +250,12 @@
         <div class="settings-content">
           <div class="setting-item">
             <div class="setting-label">Metode Pembayaran</div>
-            <div class="setting-description">
-              Tambah atau ubah metode pembayaran Anda.
-            </div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Riwayat Transaksi</div>
-            <div class="setting-description">
-              Lihat semua pembayaran yang telah dilakukan.
-            </div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Promo & Kode</div>
-            <div class="setting-description">
-              Gunakan kode promo atau kupon.
-            </div>
           </div>
         </div>
       </div>
@@ -273,17 +272,12 @@
           </div>
           <div class="setting-item">
             <div class="setting-label">Kebijakan Privasi</div>
-            <div class="setting-description">Lihat kebijakan privasi kami.</div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Syarat & Ketentuan</div>
-            <div class="setting-description">
-              Lihat syarat dan ketentuan penggunaan.
-            </div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Kontak Pengembang</div>
-            <div class="setting-description">Hubungi tim pengembang.</div>
           </div>
         </div>
       </div>
@@ -296,29 +290,78 @@
         <div class="settings-content">
           <div class="setting-item">
             <div class="setting-label">Pusat Bantuan</div>
-            <div class="setting-description">
-              Cari jawaban untuk pertanyaan umum.
-            </div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Hubungi Kami</div>
-            <div class="setting-description">
-              Kirimkan pertanyaan atau masukan Anda.
-            </div>
           </div>
           <div class="setting-item">
             <div class="setting-label">Laporkan Masalah</div>
-            <div class="setting-description">
-              Beri tahu kami tentang bug atau kesalahan.
+          </div>
+        </div>
+      </div>
+
+      <!-- New Premium Tab -->
+      <div class="premium-section" id="premiumTab" style="display: none">
+        <div class="section-header">
+          <h2>Paket Premium</h2>
+        </div>
+        <div class="current-plan">
+          <h3>Langganan Saat Ini: Premium</h3>
+          <p>Berlaku hingga: 31 Desember 2025</p>
+          <button class="btn-plan">Perbarui Langganan</button>
+        </div>
+        <div class="premium-content">
+          <div class="premium-benefit">
+            <div class="benefit-icon">🎬</div>
+            <div class="benefit-info">
+              <h3>Konten Eksklusif</h3>
+              <p>
+                Akses konten eksklusif yang hanya tersedia untuk pengguna
+                Premium.
+              </p>
             </div>
           </div>
+          <div class="premium-benefit">
+            <div class="benefit-icon">🚫</div>
+            <div class="benefit-info">
+              <h3>Bebas Iklan</h3>
+              <p>Nikmati streaming tanpa gangguan iklan.</p>
+            </div>
+          </div>
+          <div class="premium-benefit">
+            <div class="benefit-icon">📱</div>
+            <div class="benefit-info">
+              <h3>Download untuk Offline</h3>
+              <p>
+                Simpan drama favoritmu dan tonton kapan saja, bahkan tanpa
+                internet.
+              </p>
+            </div>
+          </div>
+          <div class="premium-benefit">
+            <div class="benefit-icon">📺</div>
+            <div class="benefit-info">
+              <h3>Kualitas HD</h3>
+              <p>Streaming dengan kualitas gambar hingga Full HD.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dedicated Search Results Page / Tab -->
+      <div class="settings-section" id="searchResultsTab" style="display: none">
+        <div class="section-header">
+          <h2 id="searchQueryTitle">Hasil pencarian</h2>
+        </div>
+        <div class="settings-content" id="searchPageResults" style="padding: 0">
+          <!-- populated by JS -->
         </div>
       </div>
     </div>
     <!-- Video Modal -->
     <div class="video-modal" id="videoModal">
       <div class="modal-header">
-        <div class="logo">SOPERA</div>
+        <img src="logo.png" alt="SOPERA" class="logo" />
         <button class="modal-close" onclick="closeVideoModal()">×</button>
       </div>
       <div class="modal-video-container">

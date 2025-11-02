@@ -204,6 +204,8 @@
   let liked = false;
   let disliked = false;
   let comments = [];
+  let lastSearchResults = [];
+  let lastSearchQuery = "";
 
   // Initialize after DOM ready
   function init() {
@@ -211,9 +213,78 @@
     populateShortForm();
     switchTab("library");
 
+    // Theme toggle (wires the "Tema" control in Settings)
+    const THEME_KEY = "sopera:theme";
+
+    function applyTheme(theme) {
+      const t = theme === "light" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", t);
+    }
+
+    function getStoredTheme() {
+      return (
+        localStorage.getItem(THEME_KEY) ||
+        document.documentElement.getAttribute("data-theme") ||
+        "dark"
+      );
+    }
+
+    // apply stored/initial theme immediately
+    applyTheme(getStoredTheme());
+
+    // find the Tema select in the settings tab and wire change event
+    document.querySelectorAll("#settingsTab .setting-item").forEach((item) => {
+      const labelEl = item.querySelector(".setting-label");
+      if (!labelEl) return;
+      const label = labelEl.textContent.trim().toLowerCase();
+      if (label === "tema" || label === "theme") {
+        const select = item.querySelector("select");
+        if (!select) return;
+
+        // set select to match stored theme (options are Indonesian: Terang/Gelap)
+        select.value = getStoredTheme() === "light" ? "Terang" : "Gelap";
+
+        select.addEventListener("change", (e) => {
+          const raw = (e.target.value || "").toString().toLowerCase();
+          const theme =
+            raw.includes("terang") || raw === "light" ? "light" : "dark";
+          applyTheme(theme);
+          localStorage.setItem(THEME_KEY, theme);
+        });
+      }
+    });
+
+    // if page opened from search (optional) could render later
+    // const initialTab = window.location.hash ? "shortForm" : "library";
+    // switchTab(initialTab);
+    // setTimeout(() => {
+    //   const query = decodeURIComponent(window.location.hash.substring(1));
+    //   performSearch(query);
+    // }, 100);
+    // wire search input events
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) =>
+        performSearch(e.target.value)
+      );
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeSearch();
+        } else if (e.key === "Enter") {
+          performSearch(e.target.value);
+        }
+      });
+    }
+
     // Close modal on escape key
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
+        // if search is open, close it first
+        const panel = document.getElementById("searchPanel");
+        if (panel && !panel.classList.contains("hidden")) {
+          closeSearch();
+          return;
+        }
         closeVideoModal();
       }
     });
@@ -365,6 +436,8 @@
       "paymentTab",
       "aboutTab",
       "helpTab",
+      "premiumTab",
+      "searchResultsTab",
     ];
     allIds.forEach((id) => {
       const el = document.getElementById(id);
@@ -381,6 +454,8 @@
       payment: "paymentTab",
       about: "aboutTab",
       help: "helpTab",
+      premium: "premiumTab",
+      searchResults: "searchResultsTab",
     };
     const idToShow = map[tab];
     if (idToShow) {
@@ -514,6 +589,157 @@
       .join("");
   }
 
+  // Search helpers
+  function openSearch() {
+    const panel = document.getElementById("searchPanel");
+    const input = document.getElementById("searchInput");
+    if (!panel || !input) return;
+    panel.classList.remove("hidden");
+    panel.setAttribute("aria-hidden", "false");
+    input.value = "";
+    input.focus();
+    renderSearchResults([]); // clear
+  }
+
+  function closeSearch() {
+    const panel = document.getElementById("searchPanel");
+    if (!panel) return;
+    panel.classList.add("hidden");
+    panel.setAttribute("aria-hidden", "true");
+  }
+
+  function toggleSearch() {
+    const panel = document.getElementById("searchPanel");
+    if (!panel) return openSearch();
+    if (panel.classList.contains("hidden")) openSearch();
+    else closeSearch();
+  }
+
+  function performSearch(query) {
+    const raw = (query || "").toString().trim();
+    const q = raw.toLowerCase();
+    lastSearchQuery = raw;
+    if (!q) {
+      lastSearchResults = [];
+      renderSearchResults([]);
+      return;
+    }
+
+    // search across all categories: only match when the exact substring `q`
+    // appears inside any single field (title, genre, year, description, duration)
+    const results = [];
+    for (const category in movieData) {
+      movieData[category].forEach((m) => {
+        const fields = [
+          (m.title || "").toLowerCase(),
+          (m.genre || "").toLowerCase(),
+          (m.year || "").toLowerCase(),
+          (m.description || "").toLowerCase(),
+          (m.duration || "").toLowerCase(),
+        ];
+
+        // only push if any single field contains the query substring `q`
+        const match = fields.some((field) => field.includes(q));
+        if (match) results.push(m);
+      });
+    }
+
+    lastSearchResults = results;
+    renderSearchResults(results);
+  }
+
+  function renderSearchResults(results) {
+    const container = document.getElementById("searchResults");
+    if (!container) return;
+    if (!results || results.length === 0) {
+      container.innerHTML = `<div class="search-empty" style="color:var(--muted);padding:12px">Tidak ada hasil</div>`;
+      return;
+    }
+
+    // show only up to 4 results in the panel
+    const limit = 4;
+    const shown = results.slice(0, limit);
+    container.innerHTML = shown
+      .map(
+        (r) => `
+      <div class="search-result" onclick="openVideoModal(${
+        r.id
+      }); closeSearch();">
+        <div>
+          <div class="search-result-title">${r.title}</div>
+          <div class="search-result-meta">${r.genre} • ${r.year || ""} • ${
+          r.duration || ""
+        }</div>
+        </div>
+      </div>
+    `
+      )
+      .join("");
+
+    // if there are more than limit, show a "view more" button
+    if (results.length > limit) {
+      const moreBtn = document.createElement("button");
+      moreBtn.className = "view-more-btn";
+      moreBtn.textContent = "Lihat selengkapnya";
+      moreBtn.addEventListener("click", () => {
+        openFullSearchResults();
+      });
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "12px 0";
+      wrapper.appendChild(moreBtn);
+      container.appendChild(wrapper);
+    }
+  }
+
+  function openFullSearchResults() {
+    // close the overlay first so the results tab is visible
+    closeSearch();
+
+    // populate the dedicated search results tab
+    renderFullSearchResults(lastSearchQuery, lastSearchResults);
+
+    // wait a moment for the panel to hide, then switch tab
+    setTimeout(() => {
+      switchTab("searchResults");
+    }, 60);
+  }
+
+  function renderFullSearchResults(query, results) {
+    const tab = document.getElementById("searchResultsTab");
+    if (!tab) return;
+    const titleEl = document.getElementById("searchQueryTitle");
+    const listEl = document.getElementById("searchPageResults");
+    if (titleEl)
+      titleEl.textContent = query
+        ? `Hasil pencarian: "${query}"`
+        : "Hasil pencarian";
+    if (!listEl) return;
+    if (!results || results.length === 0) {
+      listEl.innerHTML = `<div class="search-empty" style="color:var(--muted);padding:12px">Tidak ada hasil</div>`;
+      return;
+    }
+    listEl.innerHTML = results
+      .map(
+        (r) => `
+      <div class="search-result" onclick="openVideoModal(${
+        r.id
+      }); switchTab('library');">
+        <div>
+          <div class="search-result-title">${r.title}</div>
+          <div class="search-result-meta">${r.genre} • ${r.year || ""} • ${
+          r.duration || ""
+        }</div>
+        </div>
+      </div>
+    `
+      )
+      .join("");
+  }
+
+  // expose so HTML buttons can call it
+  window.openFullSearchResults = openFullSearchResults;
+  window.renderFullSearchResults = renderFullSearchResults;
+
   // Expose functions that are called from inline attributes
   window.switchTab = switchTab;
   window.openVideoModal = openVideoModal;
@@ -522,6 +748,10 @@
   window.toggleDislike = toggleDislike;
   window.shareVideo = shareVideo;
   window.addComment = addComment;
+  window.toggleSearch = toggleSearch;
+  window.openSearch = openSearch;
+  window.closeSearch = closeSearch;
+  window.performSearch = performSearch;
 
   // Run init when DOM is ready
   if (document.readyState === "loading") {

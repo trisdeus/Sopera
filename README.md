@@ -1,103 +1,72 @@
 # Sopera
 
-**Watch addictive Indonesian dramas, 1 minute at a time.**
+Watch addictive Indonesian dramas, 1 minute at a time.
 
-Sopera is a modern web-based streaming platform designed for short-form Indonesian drama content. The platform provides an engaging, mobile-first experience for users to discover and watch episodic content in bite-sized segments.
+Sopera is a static, mobile-first web streaming UI focused on short-form and episodic Indonesian drama content. The interface is built with semantic HTML, a compact CSS theme, and vanilla JavaScript — no build step required.
 
 ## 🌟 Features
 
-- **Landing Page**: Eye-catching welcome screen with authentication options (Email and Google sign-in)
-- **Home Feed**: Browse and discover trending Indonesian dramas
-- **Video Player**: Immersive full-screen video playback experience with episode tracking
-- **Search**: Find your favorite dramas quickly and efficiently
-- **User Profile**: Manage your account and viewing preferences
-- **Settings**: Customizable notifications, privacy controls, and help center
+- **Landing / library** with hero video and curated rows (Untuk Kamu, Romantis, Drama, Horor, Slice of Life)
+- **Short Form feed**: vertically scrollable short videos (short-form container)
+- **Video modal**: full-screen / centered modal with video playback, metadata, like/dislike, share and comments
+- **Account area**: profile, subscription badge and navigation into settings
+- **Settings area** split into sub-pages: General (settings), Privacy, Payment, About, Help
+- **Mobile-first responsive dark theme** with glassy accents and gradient placeholders
 
 ## 🚀 Technology Stack
 
 - **HTML5**: Semantic markup for modern web standards
-- **TailwindCSS**: Utility-first CSS framework via CDN
-- **Google Fonts**: Plus Jakarta Sans and Noto Sans typography
-- **Material Symbols**: Google's icon system for UI elements
-- **Vanilla JavaScript**: Lightweight interactivity without framework dependencies
+- **CSS**: Single `styles.css` file, mobile-first and responsive
+- **Vanilla JavaScript**: `main.js` for UI state, tabs, modal, short-form population and comments
+- No framework or build tools required
 
 ## 📁 Project Structure
 
 ```
 Sopera/
-├── index.html              # Landing/authentication page
-├── pages/
-│   ├── home.html          # Main feed/dashboard
-│   ├── search.html        # Search interface
-│   ├── profile.html       # User profile page
-│   ├── videoPlayer.html   # Video playback interface
-│   └── settingPages/
-│       ├── notifications.html
-│       ├── privacy.html
-│       └── help.html
-├── .gitattributes         # Git configuration for line endings
+├── index.html            # Single-page UI: library, short form, accounts, settings sub-pages and video modal
+├── styles.css            # All styles (dark theme, responsive layouts, gradients)
+├── main.js               # UI logic: populate rows, short-form, tabs, modal, likes/comments/share
 └── README.md             # This file
 ```
-
-## 🎨 Design
-
-- **Color Scheme**: Dark theme with primary red accent (#ea2a33)
-- **Typography**: Plus Jakarta Sans and Noto Sans font families
-- **Responsive**: Mobile-first design approach
-- **Modern UI**: Glassmorphism effects, smooth transitions, and Material Design icons
 
 ## 🛠️ Installation & Setup
 
 Since this is a static website with no build process required, setup is straightforward:
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/trisdeus/Sopera.git
    cd Sopera
    ```
 
-2. **Open in browser**
-   - Simply open `index.html` in your web browser
-   - Or use a local development server:
-   
-   **Using Python:**
-   ```bash
-   python -m http.server 8000
-   ```
-   
-   **Using Node.js (http-server):**
-   ```bash
-   npx http-server
-   ```
-   
-   **Using PHP:**
-   ```bash
-   php -S localhost:8000
-   ```
+2. **Serve locally (no build)**:
 
-3. **Navigate to**
+   - **Python:**
+     ```bash
+     python -m http.server 8000
+     ```
+   - **Node (http-server):**
+     ```bash
+     npx http-server
+     ```
+   - **PHP:**
+     ```bash
+     php -S localhost:8000
+     ```
+
+3. **Open in browser**
    ```
    http://localhost:8000
    ```
 
-## 🌐 Deployment
-
-This project can be deployed to any static hosting service:
-
-- **GitHub Pages**: Push to `gh-pages` branch or configure in repository settings
-- **Netlify**: Drag and drop the project folder or connect your repository
-- **Vercel**: Import the repository and deploy with zero configuration
-- **Firebase Hosting**: Use Firebase CLI to deploy
-- **Cloudflare Pages**: Connect your GitHub repository
-
 ## 📱 Usage
 
-1. **Landing Page**: Start at `index.html` to see the welcome screen
-2. **Navigate**: Click "Continue with Email" or "Continue with Google" to access the home page
-3. **Browse**: Explore dramas on the home feed
-4. **Search**: Use the search functionality to find specific content
-5. **Watch**: Click on any drama to start watching in the video player
-6. **Settings**: Access user settings and preferences from the home page
+- Use the bottom tab bar to switch between Library, Short Form, and Account.
+- Tap a movie card or "Putar" to open the video modal. In the modal you can play/pause, like/dislike, share, and post comments.
+- Account → Pengaturan opens settings; sub-items navigate into Privacy, Payment, About and Help views.
+- Short Form feed snaps vertically per item for a quick short-video experience.
 
 ## 🤝 Contributing
 

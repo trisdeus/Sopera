@@ -14,6 +14,81 @@ body {
   height: 100dvh;
 }
 
+/* Theme variables (dark = default). Switch by adding `data-theme="light"` on <html> */
+:root {
+  /* core */
+  --bg: #000;
+  --surface: #0b0b0b;
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.8);
+  --muted-2: rgba(255, 255, 255, 0.5);
+  --border: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-strong: rgba(255, 255, 255, 0.1);
+
+  /* accents */
+  --accent: #ff6b6b;
+  --accent-2: #c44569;
+
+  /* controls & surfaces */
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --control-bg: rgba(255, 255, 255, 0.05);
+
+  /* header fades / overlays */
+  --header-top: rgba(0, 0, 0, 0.9);
+  --header-mid: rgba(0, 0, 0, 0.7);
+  --overlay-gradient: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    transparent 100%
+  );
+}
+
+/* Light theme overrides */
+:root[data-theme="light"],
+html[data-theme="light"] {
+  --bg: #ffffff;
+  --surface: #f6f7f8;
+  --text: #111827;
+  --muted: rgba(0, 0, 0, 0.8);
+  --muted-2: rgba(0, 0, 0, 0.5);
+  --border: rgba(0, 0, 0, 0.08);
+  --glass: rgba(0, 0, 0, 0.04);
+  --glass-strong: rgba(0, 0, 0, 0.08);
+
+  --accent: #ff4d4d;
+  --accent-2: #c43f3f;
+
+  --card-bg: rgba(0, 0, 0, 0.03);
+  --control-bg: #fff;
+
+  --header-top: rgba(255, 255, 255, 0.95);
+  --header-mid: rgba(255, 255, 255, 0.9);
+  --overlay-gradient: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.9) 0%,
+    transparent 100%
+  );
+}
+
+/* Apply variables */
+body {
+  background: var(--bg);
+  color: var(--text);
+  /* ...existing code... */
+}
+
+/* Header */
+.header {
+  background: linear-gradient(
+    180deg,
+    var(--header-top) 0%,
+    var(--header-mid) 50%,
+    transparent 100%
+  );
+  /* ...existing code... */
+}
+
 /* Header */
 .header {
   position: fixed;
@@ -21,10 +96,11 @@ body {
   left: 0;
   right: 0;
   height: 60px;
+  /* use theme variables so header becomes white in light mode with same alphas */
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0.7) 50%,
+    var(--header-top) 0%,
+    var(--header-mid) 50%,
     transparent 100%
   );
   display: flex;
@@ -35,12 +111,10 @@ body {
 }
 
 .logo {
-  font-size: 28px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  display: block;
+  width: 100px; /* adjust size as needed */
+  height: auto;
+  object-fit: contain;
 }
 
 .header-actions {
@@ -65,13 +139,13 @@ body {
 
 /* Tab Navigation */
 .tab-nav {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 70px;
-  background: rgba(0, 0, 0, 0.95);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -86,12 +160,12 @@ body {
   cursor: pointer;
   padding: 8px 20px;
   transition: all 0.3s;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text);
   font-size: 12px;
 }
 
 .tab-item.active {
-  color: #ff6b6b;
+  color: var(--accent);
 }
 
 .tab-icon {
@@ -121,6 +195,7 @@ body {
 }
 
 .hero-overlay {
+  color: white;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -172,21 +247,16 @@ body {
 }
 
 .btn-play {
-  background: #fff;
-  color: #000;
+  background: var(--accent);
+  color: var(--text);
 }
-
 .btn-play:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: color-mix(in srgb, var(--accent) 80%, transparent);
 }
 
 .btn-info {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
-
-.btn-info:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--card-bg);
+  color: var(--text);
 }
 
 /* Content Rows */
@@ -240,7 +310,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+  background: var(--overlay-gradient);
   padding: 10px;
   font-size: 12px;
   font-weight: 500;
@@ -282,6 +352,7 @@ body {
 }
 
 .short-info {
+  color: #fff;
   position: absolute;
   bottom: 80px;
   left: 0;
@@ -446,7 +517,11 @@ body {
 .modal-header {
   position: sticky;
   top: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: linear-gradient(
+    180deg,
+    var(--header-top) 0%,
+    var(--header-mid) 60%
+  );
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
@@ -458,7 +533,7 @@ body {
   width: 32px;
   height: 32px;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass);
   border-radius: 50%;
   color: #fff;
   cursor: pointer;
@@ -558,9 +633,11 @@ body {
 }
 
 .comment-input {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
   flex: 1;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.05);
   color: #fff;
@@ -651,15 +728,15 @@ body {
 .settings-section {
   display: none;
   padding: 80px 20px 100px;
-  background: #000;
-  color: #fff;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
 }
 
 .section-header {
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border);
 }
 
 .section-header h2 {
@@ -678,7 +755,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 15px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: opacity 0.2s;
 }
@@ -703,10 +780,18 @@ body {
   padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: var(--control-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
   font-size: 14px;
   cursor: pointer;
+}
+
+/* Default Tema (Theme) and Bahasa select: use control variable so it follows theme */
+#settingsTab .settings-content .setting-item:nth-child(1) .setting-control,
+#settingsTab .settings-content .setting-item:nth-child(2) .setting-control {
+  background: var(--control-bg);
+  border-color: var(--border);
 }
 
 /* Switch Toggle */
@@ -755,15 +840,197 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .setting-description {
-    max-width: 50%;
-  }
+/* Premium Section */
+.premium-section {
+  display: none;
+  padding: 80px 20px 100px;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
 }
 
-@media (max-width: 480px) {
-  .setting-description {
-    max-width: 40%;
-  }
+.premium-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  background: var(--card-bg);
+  border-radius: 12px;
+}
+
+.benefit-icon {
+  font-size: 24px;
+  margin-top: 5px;
+}
+
+.benefit-info h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.benefit-info p {
+  font-size: 14px;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.current-plan {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: rgba(255, 107, 107, 0.1); /* Using the accent color */
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.current-plan h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.current-plan p {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 15px;
+}
+
+.btn-plan {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  background: #ff6b6b;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.btn-plan:hover {
+  background: #ff5252;
+}
+
+/* Search panel */
+.search-panel {
+  position: fixed;
+  top: 60px; /* below header */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+  padding: 16px;
+  z-index: 1100;
+  backdrop-filter: blur(6px);
+  overflow: auto;
+}
+
+.search-panel.hidden {
+  display: none;
+}
+
+.search-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--control-bg);
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--muted-2);
+}
+
+.search-close {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.search-results {
+  display: grid;
+  gap: 10px;
+  grid-auto-rows: min-content;
+  margin-top: 6px;
+}
+
+/* individual result */
+.search-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.search-result-title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.search-result-meta {
+  font-size: 13px;
+  color: var(--muted-2);
+}
+
+/* make header search icon clearly clickable */
+.search-icon {
+  cursor: pointer;
+}
+
+/* ensure panel respects theme variables for light/dark */
+:root[data-theme="light"] .search-panel {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.6)
+  );
+}
+
+/* Premium Section */
+.premium-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* space between .premium-benefit items */
+  margin-top: 16px;
+}
+
+/* View more button in search panel */
+.view-more-btn {
+  display: block;
+  margin: 0px auto;
+  background: none;
+  color: var(--text);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+/* Ensure search results page uses the same result styling */
+#searchResultsTab .search-result {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+#searchResultsTab .search-result + .search-result {
+  margin-top: 10px;
 }
