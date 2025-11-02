@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sopera Notifications</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#ea2a33",
+              "background-light": "#f8f6f6",
+              "background-dark": "#000000",
+            },
+            fontFamily: {
+              display: ["Be Vietnam Pro", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-white">
+    <div
+      class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+      <!-- Top App Bar -->
+      <div
+        class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+        <a href="../profile.html" class="flex size-12 shrink-0 items-center">
+          <span class="material-symbols-outlined text-white text-2xl"
+            >arrow_back</span
+          >
+        </a>
+        <h2
+          class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">
+          Notifications
+        </h2>
+        <div class="flex w-auto items-center justify-end whitespace-nowrap">
+          <p
+            class="text-primary text-sm font-bold leading-normal tracking-[0.015em] shrink-0">
+            Mark all as read
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col gap-2 p-4">
+        <!-- New Episode Notification -->
+        <div
+          class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 min-h-[72px] py-2 justify-between rounded-lg">
+          <div class="flex items-center gap-4 w-full">
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14 shrink-0"
+              data-alt="Thumbnail for the drama 'Cinta di Ujung Senja'"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdZd50tOqRUyMhdftjDIlhARclhM4illIof6I2q21tu5nsOmCgUddiEh_Fy0VDBAexcXywCIXbrKtK5ZpayRtI7eQSgbPtpEIFKNPEavW8V6apCvIsRyL8dgWrvMjug7careDYNXOfHPlbkZH_mmKBpMxUHE-PD5litaXenPBlMpbWyBO7yKP9yeH43zlYa26_YajO-iw0ol793RoL9NFYujHYdanjHviV3ReT1ZZsZ1ecFk9KmtbFjqbn1AZClhM0qps_wyS8LXgn');
+              "></div>
+            <div class="flex flex-col justify-center flex-grow">
+              <p
+                class="text-white text-base font-medium leading-normal line-clamp-2">
+                A new episode of 'Cinta di Ujung Senja' is out! Watch now.
+              </p>
+              <p
+                class="text-gray-400 dark:text-gray-500 text-sm font-normal leading-normal">
+                5m ago
+              </p>
+            </div>
+          </div>
+          <div class="shrink-0">
+            <div class="bg-primary rounded-full size-3"></div>
+          </div>
+        </div>
+        <!-- New Comment Notification -->
+        <div
+          class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 min-h-[72px] py-2 justify-between rounded-lg">
+          <div class="flex items-center gap-4 w-full">
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-14 shrink-0"
+              data-alt="Profile picture of AndiBagus"
+              style="
+                background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDcC-5d-dc8y7oAQJ0brNL_rylUSzoSyRnjBM2WQcSsDsHU7uIdomTILr9vD7xz69mXKK7vFbFN5jjEWYtUo_cHvGBtt_yfRTml2Ij2A2QINNuT9YK2W5J1QaCjC71pnmEctduGTJDKspxonPLuMDLjDR1T1i-pBgw701jSxyiOwKluI4AcJsfyCEI0aXL-Fxv7xZbxQDPmxmfQTRiZZLeddoy76ht3w6De7BzyesH66gCZzqeBt4kkndSEU_a4xwpKhQuaSfUK6PhJ');
+              "></div>
+            <div class="flex flex-col justify-center flex-grow">
+              <p
+                class="text-white text-base font-medium leading-normal line-clamp-2">
+                AndiBagus commented on your video.
+              </p>
+              <p
+                class="text-gray-400 dark:text-gray-500 text-sm font-normal leading-normal">
+                1h ago
+              </p>
+            </div>
+          </div>
+          <div class="shrink-0">
+            <div class="bg-primary rounded-full size-3"></div>
+          </div>
+        </div>
+        <!-- Competition Update Notification -->
+        <div
+          class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 min-h-[72px] py-2 justify-between rounded-lg">
+          <div class="flex items-center gap-4 w-full">
+            <div
+              class="text-white flex items-center justify-center rounded-lg bg-primary/20 shrink-0 size-14">
+              <span class="material-symbols-outlined text-primary text-3xl"
+                >emoji_events</span
+              >
+            </div>
+            <div class="flex flex-col justify-center flex-grow">
+              <p
+                class="text-white text-base font-medium leading-normal line-clamp-2">
+                Latest update for the #SoperaBikinDrama contest. Check the
+                winners!
+              </p>
+              <p
+                class="text-gray-400 dark:text-gray-500 text-sm font-normal leading-normal">
+                2h ago
+              </p>
+            </div>
+          </div>
+          <div class="shrink-0">
+            <div class="bg-primary rounded-full size-3"></div>
+          </div>
+        </div>
+        <!-- Welcome Notification -->
+        <div
+          class="flex items-center gap-4 bg-background-light dark:bg-background-dark px-4 min-h-[72px] py-2 justify-between rounded-lg">
+          <div class="flex items-center gap-4 w-full">
+            <div
+              class="text-white flex items-center justify-center rounded-lg bg-primary/20 shrink-0 size-14">
+              <span class="material-symbols-outlined text-primary text-3xl"
+                >waving_hand</span
+              >
+            </div>
+            <div class="flex flex-col justify-center flex-grow">
+              <p
+                class="text-white text-base font-medium leading-normal line-clamp-2">
+                Welcome to Sopera! Find your favorite dramas.
+              </p>
+              <p
+                class="text-gray-400 dark:text-gray-500 text-sm font-normal leading-normal">
+                1d ago
+              </p>
+            </div>
+          </div>
+          <div class="shrink-0">
+            <!-- No unread indicator for this one -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
