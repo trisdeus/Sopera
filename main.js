@@ -10,6 +10,7 @@
         duration: "1j 45m",
         description:
           "Kisah romantis tentang dua insan yang dipertemukan saat musim hujan. Drama romantis yang penuh dengan konflik dan perasaan mendalam.",
+        thumb: "images/thumb-0.jpg",
       },
       {
         id: 1,
@@ -19,6 +20,7 @@
         duration: "1j 30m",
         description:
           "Drama emosional tentang perjuangan seseorang mengatasi patah hati dan menemukan kebahagiaan kembali.",
+        thumb: "images/thumb-1.jpg",
       },
       {
         id: 2,
@@ -28,6 +30,7 @@
         duration: "1j 55m",
         description:
           "Kisah menegangkan tentang keluarga yang pindah ke rumah baru yang ternyata berpenghuni makhluk halus.",
+        thumb: "images/thumb-2.jpg",
       },
       {
         id: 3,
@@ -37,6 +40,7 @@
         duration: "1j 20m",
         description:
           "Cerita sederhana tentang kehidupan sehari-hari dengan berbagai momen berharga.",
+        thumb: "images/thumb-3.jpg",
       },
     ],
     romance: [
@@ -46,6 +50,7 @@
         genre: "Romantis",
         year: "2023",
         duration: "1j 35m",
+        thumb: "images/thumb-4.jpg",
       },
       {
         id: 5,
@@ -53,6 +58,7 @@
         genre: "Romantis",
         year: "2024",
         duration: "1j 40m",
+        thumb: "images/thumb-5.jpg",
       },
       {
         id: 6,
@@ -60,6 +66,7 @@
         genre: "Romantis",
         year: "2023",
         duration: "1j 50m",
+        thumb: "images/thumb-6.jpg",
       },
       {
         id: 7,
@@ -67,6 +74,7 @@
         genre: "Romantis",
         year: "2024",
         duration: "1j 25m",
+        thumb: "images/thumb-7.jpg",
       },
       {
         id: 8,
@@ -74,6 +82,7 @@
         genre: "Romantis",
         year: "2023",
         duration: "1j 30m",
+        thumb: "images/thumb-8.jpg",
       },
     ],
     drama: [
@@ -83,6 +92,7 @@
         genre: "Drama",
         year: "2024",
         duration: "2j 10m",
+        thumb: "images/thumb-9.jpg",
       },
       {
         id: 10,
@@ -90,6 +100,7 @@
         genre: "Drama",
         year: "2023",
         duration: "1j 55m",
+        thumb: "images/thumb-10.jpg",
       },
       {
         id: 11,
@@ -97,6 +108,7 @@
         genre: "Drama",
         year: "2024",
         duration: "2j 05m",
+        thumb: "images/thumb-11.jpg",
       },
       {
         id: 12,
@@ -104,6 +116,7 @@
         genre: "Drama",
         year: "2023",
         duration: "1j 45m",
+        thumb: "images/thumb-12.jpg",
       },
       {
         id: 13,
@@ -111,6 +124,7 @@
         genre: "Drama",
         year: "2024",
         duration: "2j 00m",
+        thumb: "images/thumb-13.jpg",
       },
     ],
     horror: [
@@ -120,6 +134,7 @@
         genre: "Horor",
         year: "2023",
         duration: "1j 30m",
+        thumb: "images/thumb-14.jpg",
       },
       {
         id: 15,
@@ -127,6 +142,7 @@
         genre: "Horor",
         year: "2024",
         duration: "1j 40m",
+        thumb: "images/thumb-15.jpg",
       },
       {
         id: 16,
@@ -134,6 +150,7 @@
         genre: "Horor",
         year: "2023",
         duration: "1j 50m",
+        thumb: "images/thumb-16.jpg",
       },
       {
         id: 17,
@@ -141,6 +158,7 @@
         genre: "Horor",
         year: "2024",
         duration: "1j 35m",
+        thumb: "images/thumb-17.jpg",
       },
       {
         id: 18,
@@ -148,6 +166,7 @@
         genre: "Horor",
         year: "2023",
         duration: "1j 45m",
+        thumb: "images/thumb-18.jpg",
       },
     ],
     sliceOfLife: [
@@ -157,6 +176,7 @@
         genre: "Slice of Life",
         year: "2024",
         duration: "1j 15m",
+        thumb: "images/thumb-19.jpg",
       },
       {
         id: 20,
@@ -164,6 +184,7 @@
         genre: "Slice of Life",
         year: "2023",
         duration: "1j 20m",
+        thumb: "images/thumb-20.jpg",
       },
       {
         id: 21,
@@ -171,6 +192,7 @@
         genre: "Slice of Life",
         year: "2024",
         duration: "1j 25m",
+        thumb: "images/thumb-21.jpg",
       },
       {
         id: 22,
@@ -178,6 +200,7 @@
         genre: "Slice of Life",
         year: "2023",
         duration: "1j 10m",
+        thumb: "images/thumb-22.jpg",
       },
       {
         id: 23,
@@ -185,18 +208,61 @@
         genre: "Slice of Life",
         year: "2024",
         duration: "1j 18m",
+        thumb: "images/thumb-23.jpg",
       },
     ],
   };
 
   const shortFormData = [
-    { id: 24, title: "Momen Spontan", genre: "Slice of Life" },
-    { id: 25, title: "Cinta Tak Terduga", genre: "Romantis" },
-    { id: 26, title: "Ketakutan Malam", genre: "Horor" },
-    { id: 27, title: "Perjuangan Sejati", genre: "Drama" },
-    { id: 28, title: "Kebahagiaan Kecil", genre: "Slice of Life" },
-    { id: 29, title: "Cinta Segitiga", genre: "Romantis" },
-    { id: 30, title: "Misteri Terungkap", genre: "Horor" },
+    {
+      id: 24,
+      title: "Momen Spontan",
+      genre: "Slice of Life",
+      thumb: "images/thumb-24.jpg",
+      video: "videos/short-24.mp4",
+    },
+    {
+      id: 25,
+      title: "Cinta Tak Terduga",
+      genre: "Romantis",
+      thumb: "images/thumb-25.jpg",
+      video: "videos/short-25.mp4",
+    },
+    {
+      id: 26,
+      title: "Ketakutan Malam",
+      genre: "Horor",
+      thumb: "images/thumb-26.jpg",
+      video: "videos/short-26.mp4",
+    },
+    {
+      id: 27,
+      title: "Perjuangan Sejati",
+      genre: "Drama",
+      thumb: "images/thumb-27.jpg",
+      video: "videos/short-27.mp4",
+    },
+    {
+      id: 28,
+      title: "Kebahagiaan Kecil",
+      genre: "Slice of Life",
+      thumb: "images/thumb-28.jpg",
+      video: "videos/short-28.mp4",
+    },
+    {
+      id: 29,
+      title: "Cinta Segitiga",
+      genre: "Romantis",
+      thumb: "images/thumb-29.jpg",
+      video: "videos/short-29.mp4",
+    },
+    {
+      id: 30,
+      title: "Misteri Terungkap",
+      genre: "Horor",
+      thumb: "images/thumb-30.jpg",
+      video: "videos/short-30.mp4",
+    },
   ];
 
   // State
@@ -324,11 +390,19 @@
     ];
 
     function createMovieCard(movie, gradientIndex) {
+      const src = movie.thumb
+        ? movie.thumb
+        : "https://placehold.co/720x1280.jpg";
       return `
                 <div class="movie-card ${
                   gradients[gradientIndex % gradients.length]
                 }" onclick="openVideoModal(${movie.id})">
-                    <div class="movie-card-overlay">${movie.title}</div>
+                    <img src="${src}" alt="${escapeHtml(
+        movie.title
+      )}" class="movie-thumb" />
+                    <div class="movie-card-overlay">${escapeHtml(
+                      movie.title
+                    )}</div>
                 </div>
             `;
     }
@@ -362,7 +436,7 @@
         .join("");
   }
 
-  // Populate Short Form
+  // Populate Short Form (use thumb if available)
   function populateShortForm() {
     const container = document.getElementById("shortFormContainer");
     const gradients = [
@@ -381,9 +455,14 @@
     container.innerHTML = shortFormData
       .map((item, index) => {
         const gradientClass = gradients[index % gradients.length];
+        const thumbSrc = item.thumb
+          ? item.thumb
+          : "https://placehold.co/720x1280.jpg";
         return `
                 <div class="short-form-item ${gradientClass}">
-                    <div class="short-video"></div>
+                    <div class="short-video"><img src="${thumbSrc}" alt="${escapeHtml(
+          item.title
+        )}" class="short-thumb" /></div>
                     <div class="short-info">
                         <div class="short-title">${item.title}</div>
                         <div class="short-genre">${item.genre}</div>
@@ -630,13 +709,7 @@
     const results = [];
     for (const category in movieData) {
       movieData[category].forEach((m) => {
-        const fields = [
-          (m.title || "").toLowerCase(),
-          (m.genre || "").toLowerCase(),
-          (m.year || "").toLowerCase(),
-          (m.description || "").toLowerCase(),
-          (m.duration || "").toLowerCase(),
-        ];
+        const fields = [(m.title || "").toLowerCase()];
 
         // only push if any single field contains the query substring `q`
         const match = fields.some((field) => field.includes(q));
@@ -758,5 +831,15 @@
     document.addEventListener("DOMContentLoaded", init);
   } else {
     init();
+  }
+
+  // small helper - simple escaping for titles used in templates
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 })();
