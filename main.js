@@ -265,6 +265,120 @@
     },
   ];
 
+  class TikTokAutoplayManager {
+    constructor() {
+      this.currentVideo = null;
+      this.currentVideoId = null;
+      this.canUnmute = false;
+      this.setupUserGestureListener();
+      this.setupIntersectionObserver();
+    }
+
+    setupUserGestureListener() {
+      const enableUnmute = () => {
+        this.canUnmute = true;
+        document.removeEventListener("touchstart", enableUnmute, {
+          once: true,
+        });
+        document.removeEventListener("click", enableUnmute, { once: true });
+      };
+
+      document.addEventListener("touchstart", enableUnmute, { once: true });
+      document.addEventListener("click", enableUnmute, { once: true });
+    }
+
+    setupIntersectionObserver() {
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+              this.playVideo(entry.target);
+            } else {
+              entry.target.pause();
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+    }
+
+    playVideo(video) {
+      video.muted = true;
+
+      video
+        .play()
+        .then(() => {
+          console.log("Video playing muted");
+          if (this.canUnmute) {
+            video.muted = false;
+            video.hasUnmuted = true;
+          }
+        })
+        .catch((error) => {
+          console.warn("Autoplay failed:", error.message);
+        });
+    }
+
+    setVideo(video, videoId) {
+      // Stop current video
+      if (this.currentVideo) {
+        this.currentVideo.pause();
+        this.observer.unobserve(this.currentVideo);
+      }
+
+      // Set new video
+      this.currentVideo = video;
+      this.currentVideoId = videoId;
+
+      // Observe new video
+      if (video) {
+        this.observer.observe(video);
+      }
+    }
+
+    cleanup() {
+      if (this.currentVideo) {
+        this.currentVideo.pause();
+        this.observer.unobserve(this.currentVideo);
+      }
+    }
+  }
+
+  const autoplayManager = new TikTokAutoplayManager();
+  const PROFILE_KEY = "sopera:profile";
+
+  function loadProfileObject() {
+    const raw = localStorage.getItem(PROFILE_KEY);
+    const defaults = { name: "Akun Saya", email: "user@sopera.id", avatar: "" };
+    if (!raw) return defaults;
+    try {
+      const p = JSON.parse(raw);
+      return Object.assign(defaults, p || {});
+    } catch (e) {
+      return defaults;
+    }
+  }
+
+  function saveProfileObject(profile) {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  }
+
+  function applyProfileToDOM() {
+    const profile = loadProfileObject();
+    const nameEl = document.getElementById("profileName");
+    const emailEl = document.getElementById("profileEmail");
+    const avatarImg = document.getElementById("profileAvatarImg");
+    const usernameInput = document.getElementById("usernameInput");
+    const emailInput = document.getElementById("emailInput");
+
+    if (nameEl) nameEl.textContent = profile.name;
+    if (emailEl) emailEl.textContent = profile.email;
+    if (avatarImg)
+      avatarImg.src = profile.avatar || "images/avatar-default.jpg";
+    if (usernameInput) usernameInput.value = profile.name || "";
+    if (emailInput) emailInput.value = profile.email || "";
+  }
+
   // State
   let currentVideoId = null;
   let liked = false;
@@ -275,6 +389,98 @@
 
   // Initialize after DOM ready
   function init() {
+    // prevent background scroll while cover visible
+    const cover = document.getElementById("coverScreen");
+
+    // apply stored profile immediately
+    applyProfileToDOM();
+
+    // avatar file input
+    const avatarInput = document.getElementById("profileAvatarInput");
+    const avatarImg = document.getElementById("profileAvatarImg");
+    const saveBtn = document.getElementById("saveProfileBtn");
+    const removeAvatarBtn = document.getElementById("removeAvatarBtn");
+
+    // click on avatar image opens file picker
+    const avatarWrapper = document.getElementById("profileAvatarWrapper");
+    if (avatarWrapper && avatarInput) {
+      avatarWrapper.addEventListener("click", () => avatarInput.click());
+    }
+
+    if (avatarInput) {
+      avatarInput.addEventListener("change", (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          if (avatarImg) avatarImg.src = dataUrl;
+          const p = loadProfileObject();
+          p.avatar = dataUrl;
+          saveProfileObject(p);
+        };
+        reader.readAsDataURL(f);
+      });
+    }
+
+    if (removeAvatarBtn) {
+      removeAvatarBtn.addEventListener("click", () => {
+        const p = loadProfileObject();
+        p.avatar = "";
+        saveProfileObject(p);
+        if (avatarImg) avatarImg.src = "images/avatar-default.jpg";
+      });
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener("click", () => {
+        const usernameInput = document.getElementById("usernameInput");
+        const emailInput = document.getElementById("emailInput");
+        const name = (usernameInput && usernameInput.value.trim()) || "";
+        const email = (emailInput && emailInput.value.trim()) || "";
+
+        // basic validation
+        if (!name) {
+          alert("Nama pengguna tidak boleh kosong.");
+          usernameInput && usernameInput.focus();
+          return;
+        }
+        // simple email check
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailOk) {
+          alert("Masukkan email yang valid.");
+          emailInput && emailInput.focus();
+          return;
+        }
+
+        const p = loadProfileObject();
+        p.name = name;
+        p.email = email;
+        saveProfileObject(p);
+        applyProfileToDOM();
+        // small confirmation
+        alert("Profil berhasil diperbarui.");
+      });
+    }
+
+    if (cover) {
+      document.body.classList.add("cover-open");
+      const hideCover = () => {
+        cover.classList.add("hide");
+        // allow background scroll after fade
+        setTimeout(() => {
+          document.body.classList.remove("cover-open");
+          if (cover && cover.parentNode) cover.parentNode.removeChild(cover);
+        }, 360);
+      };
+      // support both button and whole-area tap
+      cover.querySelector(".cover-enter")?.addEventListener("click", hideCover);
+      cover.addEventListener("click", (e) => {
+        // avoid closing when clicking inner elements that may delegate
+        if (e.target === cover || e.target.closest(".cover-enter")) hideCover();
+      });
+    }
+
     populateMovieRows();
     populateShortForm();
     switchTab("library");
@@ -363,6 +569,34 @@
           closeVideoModal();
         }
       });
+
+      // make modal video toggle mute on tap
+      const modalVideoEl = document.getElementById("modalVideo");
+      if (modalVideoEl) {
+        // ensure click on the video itself doesn't close modal and toggles mute
+        modalVideoEl.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          modalVideoEl.muted = !modalVideoEl.muted;
+          // small visual state for debugging/ styling hooks
+          modalVideoEl.setAttribute(
+            "data-muted",
+            modalVideoEl.muted ? "true" : "false"
+          );
+        });
+      }
+    }
+
+    // allow hero video to toggle mute on tap as well (if present)
+    const heroVideo = document.querySelector(".hero-video");
+    if (heroVideo) {
+      heroVideo.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        heroVideo.muted = !heroVideo.muted;
+        heroVideo.setAttribute(
+          "data-muted",
+          heroVideo.muted ? "true" : "false"
+        );
+      });
     }
 
     // Enter key to submit comment
@@ -372,6 +606,27 @@
         if (e.key === "Enter") {
           addComment();
         }
+      });
+    }
+
+    const container = document.getElementById("shortFormContainer");
+    if (container) {
+      // Existing event delegation
+      container.addEventListener("click", function (ev) {
+        const btn = ev.target.closest(".short-action-btn");
+        if (!btn) {
+          // Handle video item click
+          const itemEl = ev.target.closest(".short-form-item");
+          if (itemEl) {
+            const id = parseInt(itemEl.dataset.id, 10);
+            if (!Number.isNaN(id)) {
+              openVideoModal(id);
+            }
+          }
+          return;
+        }
+
+        // ... existing action handling ...
       });
     }
   }
@@ -455,34 +710,45 @@
     container.innerHTML = shortFormData
       .map((item, index) => {
         const gradientClass = gradients[index % gradients.length];
-        const thumbSrc = item.thumb
-          ? item.thumb
-          : "https://placehold.co/720x1280.jpg";
+        const thumbSrc = item.thumb || "https://placehold.co/720x1280.jpg";
+        const videoSrc = item.video || `videos/short-${item.id}.mp4`;
+
         return `
-                <div class="short-form-item ${gradientClass}">
-                    <div class="short-video"><img src="${thumbSrc}" alt="${escapeHtml(
+          <div class="short-form-item ${gradientClass}" data-id="${item.id}">
+            <div class="short-video">
+              <video 
+                src="${videoSrc}" 
+                poster="${thumbSrc}" 
+                class="short-video-element"
+                muted
+                playsinline
+                preload="metadata"
+                loop
+              ></video>
+              <img src="${thumbSrc}" alt="${escapeHtml(
           item.title
-        )}" class="short-thumb" /></div>
-                    <div class="short-info">
-                        <div class="short-title">${item.title}</div>
-                        <div class="short-genre">${item.genre}</div>
-                    </div>
-                    <div class="short-actions">
-                        <div class="short-action-btn">
-                            <div class="short-action-icon">👍</div>
-                            <div class="short-action-label">1.2k</div>
-                        </div>
-                        <div class="short-action-btn">
-                            <div class="short-action-icon">💬</div>
-                            <div class="short-action-label">245</div>
-                        </div>
-                        <div class="short-action-btn">
-                            <div class="short-action-icon">🔗</div>
-                            <div class="short-action-label">Bagikan</div>
-                        </div>
-                    </div>
-                </div>
-            `;
+        )}" class="short-thumb" />
+            </div>
+            <div class="short-info">
+              <div class="short-title">${escapeHtml(item.title)}</div>
+              <div class="short-genre">${escapeHtml(item.genre)}</div>
+            </div>
+            <div class="short-actions" data-id="${item.id}">
+              <div class="short-action-btn" data-action="like">
+                <div class="short-action-icon">👍</div>
+                <div class="short-action-label">12</div>
+              </div>
+              <div class="short-action-btn" data-action="comment">
+                <div class="short-action-icon">💬</div>
+                <div class="short-action-label">245</div>
+              </div>
+              <div class="short-action-btn" data-action="share">
+                <div class="short-action-icon">🔗</div>
+                <div class="short-action-label">Bagikan</div>
+              </div>
+            </div>
+          </div>
+        `;
       })
       .join("");
   }
@@ -549,46 +815,83 @@
     const modal = document.getElementById("videoModal");
     modal && modal.classList.add("active");
 
-    // Find movie data
-    let movie = null;
+    let item = null;
     for (const category in movieData) {
       const found = movieData[category].find((m) => m.id === videoId);
       if (found) {
-        movie = found;
+        item = found;
         break;
       }
     }
-
-    if (movie) {
-      const titleEl = document.getElementById("modalTitle");
-      const yearEl = document.getElementById("modalYear");
-      const genreEl = document.getElementById("modalGenre");
-      const durationEl = document.getElementById("modalDuration");
-      const descEl = document.getElementById("modalDescription");
-      const video = document.getElementById("modalVideo");
-
-      if (titleEl) titleEl.textContent = movie.title;
-      if (yearEl) yearEl.textContent = movie.year || "2024";
-      if (genreEl) genreEl.textContent = movie.genre || "Drama";
-      if (durationEl) durationEl.textContent = movie.duration || "1j 30m";
-      if (descEl)
-        descEl.textContent = movie.description || "Deskripsi tidak tersedia.";
-      if (video)
-        video.src =
-          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+    if (!item && typeof shortFormData !== "undefined") {
+      item = shortFormData.find((s) => s.id === videoId) || null;
     }
 
-    // Reset like/dislike
-    liked = false;
-    disliked = false;
-    const likeIcon = document.getElementById("likeIcon");
-    const dislikeIcon = document.getElementById("dislikeIcon");
-    if (likeIcon) likeIcon.style.opacity = "0.5";
-    if (dislikeIcon) dislikeIcon.style.opacity = "0.5";
+    const titleEl = document.getElementById("modalTitle");
+    const yearEl = document.getElementById("modalYear");
+    const genreEl = document.getElementById("modalGenre");
+    const durationEl = document.getElementById("modalDuration");
+    const descEl = document.getElementById("modalDescription");
+    const video = document.getElementById("modalVideo");
 
-    // Clear comments
-    comments = [];
-    renderComments();
+    if (item) {
+      if (titleEl) titleEl.textContent = item.title || "";
+      if (yearEl) yearEl.textContent = item.year || "";
+      if (genreEl) genreEl.textContent = item.genre || "";
+      if (durationEl) durationEl.textContent = item.duration || "";
+      if (descEl) descEl.textContent = item.description || "";
+
+      const src =
+        item.video ||
+        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+      const poster = item.thumb || "";
+
+      if (video) {
+        // Set video attributes for TikTok-like behavior
+        if (poster) video.setAttribute("poster", poster);
+        video.src = src;
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        video.loop = true;
+        video.controls = false;
+
+        video.load();
+
+        // Use autoplay manager for consistent behavior
+        autoplayManager.setVideo(video, videoId);
+
+        video
+          .play()
+          .then(() => {
+            console.log("Autoplay started successfully");
+          })
+          .catch((error) => {
+            console.warn("Autoplay failed:", error.message);
+            video.muted = true;
+            video.controls = false;
+          });
+
+        // Toggle mute on video click
+        video.addEventListener("click", () => {
+          video.muted = !video.muted;
+          video.setAttribute("data-muted", video.muted ? "true" : "false");
+        });
+      }
+    } else {
+      if (titleEl) titleEl.textContent = "";
+      if (yearEl) yearEl.textContent = "";
+      if (genreEl) genreEl.textContent = "";
+      if (durationEl) durationEl.textContent = "";
+      if (descEl) descEl.textContent = "";
+      if (video) {
+        video.pause();
+        video.src = "";
+        video.removeAttribute("poster");
+      }
+    }
+
+    // ... existing like/dislike and comments reset ...
   }
 
   function closeVideoModal() {
@@ -599,6 +902,8 @@
       video.pause();
       video.src = "";
     }
+    // Cleanup autoplay manager
+    autoplayManager.cleanup();
   }
 
   function toggleLike() {
@@ -842,4 +1147,405 @@
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
   }
+
+  // short-form interaction helpers (keeps state per-short)
+  const shortLikeSet = new Set();
+  // store inline comments per short (id -> array of comment objects)
+  const shortComments = new Map();
+
+  function shortToggleLike(id, btnEl) {
+    const key = String(id);
+    const labelEl = btnEl.querySelector(".short-action-label");
+    // simple toggle visual state + label update (no backend)
+    if (shortLikeSet.has(key)) {
+      shortLikeSet.delete(key);
+      btnEl.classList.remove("liked");
+      if (labelEl) {
+        // naive decrement if numeric; otherwise leave text
+        const n = parseInt(labelEl.textContent.replace(/\D/g, ""), 10);
+        if (!Number.isNaN(n)) labelEl.textContent = `${Math.max(0, n - 1)}`;
+      }
+    } else {
+      shortLikeSet.add(key);
+      btnEl.classList.add("liked");
+      if (labelEl) {
+        const n = parseInt(labelEl.textContent.replace(/\D/g, ""), 10);
+        if (!Number.isNaN(n)) labelEl.textContent = `${n + 1}`;
+      }
+    }
+  }
+
+  function shortOpenComments(id) {
+    // populate modal comments from inline storage then open modal
+    comments = shortComments.get(String(id))
+      ? [...shortComments.get(String(id))]
+      : [];
+    renderComments();
+    openVideoModal(id);
+    // focus the input after modal opens
+    setTimeout(() => {
+      const input = document.getElementById("commentInput");
+      if (input) input.focus();
+    }, 250);
+  }
+
+  function shortShare(id) {
+    // find item either in movieData or shortFormData
+    let item = null;
+    for (const c in movieData) {
+      const found = movieData[c].find((m) => m.id === id);
+      if (found) {
+        item = found;
+        break;
+      }
+    }
+    if (!item) {
+      item = shortFormData.find((s) => s.id === id) || null;
+    }
+
+    const shareUrl = `${window.location.origin}${window.location.pathname}#short:${id}`;
+    const payload = {
+      title: item ? item.title : "Sopera",
+      text: item ? `Tonton ${item.title} di Sopera` : "Tonton di Sopera",
+      url: shareUrl,
+    };
+
+    if (navigator.share) {
+      navigator.share(payload).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => alert("Link berhasil disalin!"))
+        .catch(() => alert("Gagal menyalin link."));
+    } else {
+      prompt("Salin link ini:", shareUrl);
+    }
+  }
+
+  // expose short-form helpers if needed by other modules
+  window.shortToggleLike = shortToggleLike;
+  window.shortOpenComments = shortOpenComments;
+  window.shortShare = shortShare;
+
+  // Show inline comment textfield for a short item (called from delegated click)
+  function shortShowCommentBox(id, btnEl) {
+    const itemEl = btnEl.closest(".short-form-item");
+    if (!itemEl) return;
+    // avoid duplicate box
+    const existing = itemEl.querySelector(".inline-comment-box");
+    if (existing) {
+      const input = existing.querySelector(".inline-comment-input");
+      input && input.focus();
+      return;
+    }
+
+    const box = document.createElement("div");
+    box.className = "inline-comment-box";
+    box.innerHTML = `
+      <input class="inline-comment-input" type="text" placeholder="Tulis komentar..." />
+      <button class="inline-comment-submit">Kirim</button>
+      <button class="inline-comment-cancel" aria-label="Batal">×</button>
+    `;
+    // append near actions (positioning controlled by CSS)
+    itemEl.appendChild(box);
+
+    const input = box.querySelector(".inline-comment-input");
+    const submit = box.querySelector(".inline-comment-submit");
+    const cancel = box.querySelector(".inline-comment-cancel");
+
+    function cleanup() {
+      box.remove();
+    }
+
+    // submit handler
+    submit.addEventListener("click", () => {
+      const text = (input.value || "").trim();
+      if (!text) {
+        // simple UX: shake / red outline
+        input.classList.add("invalid");
+        setTimeout(() => input.classList.remove("invalid"), 800);
+        return;
+      }
+
+      // store comment for this short
+      const key = String(id);
+      const arr = shortComments.get(key) || [];
+      arr.push({ author: "Pengguna", text, time: "Sekarang" });
+      shortComments.set(key, arr);
+
+      // update comment count label on the short-actions button
+      const actionsWrapper = itemEl.querySelector(".short-actions");
+      const commentBtn = actionsWrapper?.querySelector(
+        '[data-action="comment"] .short-action-label'
+      );
+      if (commentBtn) {
+        const current = parseInt(
+          String(commentBtn.textContent).replace(/\D/g, ""),
+          10
+        );
+        const next = Number.isNaN(current) ? arr.length : current + 1;
+        commentBtn.textContent = String(next);
+      }
+
+      // if the modal for this id is open, sync comments to modal
+      if (currentVideoId === id) {
+        comments = [...arr];
+        renderComments();
+      }
+
+      cleanup();
+    });
+
+    // keyboard: Enter to send, Escape to cancel
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submit.click();
+      if (e.key === "Escape") cancel.click();
+    });
+
+    cancel.addEventListener("click", cleanup);
+    // focus input
+    input.focus();
+  }
+
+  // expose inline comment function for tests / other code if needed
+  window.shortShowCommentBox = shortShowCommentBox;
+
+  // simple notifications store (sample items)
+  const notifications = [
+    {
+      id: "n1",
+      title: "Episode Baru: Cinta Pertama",
+      text: "Episode 5 tersedia sekarang.",
+      time: "1 jam lalu",
+      unread: true,
+    },
+    {
+      id: "n2",
+      title: "Penawaran Premium",
+      text: "Diskon 20% untuk upgrade minggu ini.",
+      time: "Kemarin",
+      unread: true,
+    },
+    {
+      id: "n3",
+      title: "Komentar Baru",
+      text: "Seseorang membalas komentar Anda.",
+      time: "2 hari lalu",
+      unread: false,
+    },
+  ];
+
+  function renderNotifications() {
+    const list = document.getElementById("notifList");
+    const empty = document.getElementById("notifEmpty");
+    if (!list || !empty) return;
+    if (!notifications || notifications.length === 0) {
+      list.innerHTML = "";
+      empty.style.display = "block";
+      return;
+    }
+    empty.style.display = "none";
+    list.innerHTML = notifications
+      .map(
+        (n) => `
+      <div class="notif-item ${n.unread ? "unread" : ""}" data-id="${
+          n.id
+        }" onclick="openNotification('${n.id}')">
+        <div class="notif-avatar">${(n.title || "").charAt(0) || "N"}</div>
+        <div class="notif-body">
+          <div class="notif-title">${escapeHtml(n.title)}</div>
+          <div class="notif-text">${escapeHtml(n.text)}</div>
+          <div class="notif-time">${escapeHtml(n.time)}</div>
+        </div>
+      </div>
+    `
+      )
+      .join("");
+  }
+
+  function openNotifications() {
+    const panel = document.getElementById("notifPanel");
+    if (!panel) return;
+    panel.classList.remove("hidden");
+    panel.setAttribute("aria-hidden", "false");
+    renderNotifications();
+  }
+
+  function closeNotifications() {
+    const panel = document.getElementById("notifPanel");
+    if (!panel) return;
+    panel.classList.add("hidden");
+    panel.setAttribute("aria-hidden", "true");
+  }
+
+  function toggleNotifications() {
+    const panel = document.getElementById("notifPanel");
+    if (!panel) return openNotifications();
+    if (panel.classList.contains("hidden")) openNotifications();
+    else closeNotifications();
+  }
+
+  function openNotification(id) {
+    // mark read and (for demo) open related content
+    const idx = notifications.findIndex((n) => n.id === id);
+    if (idx >= 0) {
+      notifications[idx].unread = false;
+      renderNotifications();
+      // demo behaviour: if notification mentions episode, open library or modal
+      if (notifications[idx].title.toLowerCase().includes("episode")) {
+        closeNotifications();
+        // open library or video modal - here we try to open movie id 4 as an example
+        openVideoModal(4);
+      }
+    }
+  }
+
+  function clearNotifications() {
+    // simple clear
+    notifications.length = 0;
+    renderNotifications();
+  }
+
+  // close notifications when clicking outside
+  document.addEventListener("click", (e) => {
+    const panel = document.getElementById("notifPanel");
+    const bell = document.querySelector(".notif-icon");
+    if (!panel || !bell) return;
+    const withinPanel = e.target.closest && e.target.closest("#notifPanel");
+    const onBell = e.target.closest && e.target.closest(".notif-icon");
+    if (!withinPanel && !onBell) {
+      closeNotifications();
+    }
+  });
+
+  // expose for HTML
+  window.toggleNotifications = toggleNotifications;
+  window.openNotifications = openNotifications;
+  window.closeNotifications = closeNotifications;
+  window.openNotification = openNotification;
+  window.clearNotifications = clearNotifications;
+
+  // show profile edit screen, populate fields
+  function showProfileEditScreen() {
+    const screen = document.getElementById("profileEditScreen");
+    if (!screen) return;
+    // hide other main sections
+    ["libraryTab", "shortFormTab", "accountsTab", "settingsTab"].forEach(
+      (id) => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = "none";
+      }
+    );
+    screen.style.display = "block";
+
+    // populate values
+    const profile = loadProfileObject();
+    const nameEl = document.getElementById("editUsername");
+    const emailEl = document.getElementById("editEmail");
+    const avatarImg = document.getElementById("editAvatarImg");
+    if (nameEl) nameEl.value = profile.name || "";
+    if (emailEl) emailEl.value = profile.email || "";
+    if (avatarImg)
+      avatarImg.src = profile.avatar || "images/avatar-default.jpg";
+
+    // wire input handlers (idempotent)
+    const avatarInput = document.getElementById("editAvatarInput");
+    if (avatarInput && !avatarInput._wired) {
+      avatarInput.addEventListener("change", (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          const preview = document.getElementById("editAvatarImg");
+          if (preview) preview.src = dataUrl;
+        };
+        reader.readAsDataURL(f);
+      });
+      avatarInput._wired = true;
+    }
+
+    // form submit
+    const form = document.getElementById("profileEditForm");
+    if (form && !form._wired) {
+      form.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        const newName = (
+          document.getElementById("editUsername")?.value || ""
+        ).trim();
+        const newEmail = (
+          document.getElementById("editEmail")?.value || ""
+        ).trim();
+        if (!newName) {
+          alert("Nama pengguna tidak boleh kosong.");
+          document.getElementById("editUsername")?.focus();
+          return;
+        }
+        const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail);
+        if (!okEmail) {
+          alert("Masukkan email yang valid.");
+          document.getElementById("editEmail")?.focus();
+          return;
+        }
+
+        // avatar: if a new file selected, read it synchronously now to store; otherwise keep existing
+        const avatarInputEl = document.getElementById("editAvatarInput");
+        const existingProfile = loadProfileObject();
+
+        function persistAndClose(avatarDataUrl) {
+          const p = loadProfileObject();
+          p.name = newName;
+          p.email = newEmail;
+          if (avatarDataUrl) p.avatar = avatarDataUrl;
+          saveProfileObject(p);
+          applyProfileToDOM();
+          // close the edit screen and return to accounts tab
+          hideProfileEditScreen();
+          switchTab("accounts");
+          alert("Profil berhasil diperbarui.");
+        }
+
+        if (avatarInputEl && avatarInputEl.files && avatarInputEl.files[0]) {
+          const f = avatarInputEl.files[0];
+          const reader = new FileReader();
+          reader.onload = () => persistAndClose(reader.result);
+          reader.readAsDataURL(f);
+        } else {
+          // keep previous avatar
+          persistAndClose(existingProfile.avatar || "");
+        }
+      });
+      form._wired = true;
+    }
+
+    // cancel button
+    const cancelBtn = document.getElementById("cancelEditProfile");
+    if (cancelBtn && !cancelBtn._wired) {
+      cancelBtn.addEventListener("click", () => {
+        hideProfileEditScreen();
+        switchTab("accounts");
+      });
+      cancelBtn._wired = true;
+    }
+  }
+
+  function hideProfileEditScreen() {
+    const screen = document.getElementById("profileEditScreen");
+    if (!screen) return;
+    screen.style.display = "none";
+  }
+
+  // wire "Ubah Profil" button (editProfileBtn) during init
+  // ...inside init() after DOM elements are available...
+  (function wireEditProfileButton() {
+    const editBtn = document.getElementById("editProfileBtn");
+    if (editBtn) {
+      editBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showProfileEditScreen();
+      });
+    }
+  })();
+
+  // ...existing code...
 })();

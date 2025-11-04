@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- Cover Screen -->
+    <div
+      id="coverScreen"
+      class="cover-screen"
+      role="dialog"
+      aria-label="Cover screen">
+      <div class="cover-inner">
+        <img src="logo.png" alt="SOPERA" class="cover-logo" />
+        <p class="cover-sub">Streaming. Cerita. Emosi.</p>
+        <button class="cover-enter" aria-label="Masuk ke aplikasi">
+          Ketuk untuk masuk
+        </button>
+      </div>
+    </div>
+
     <!-- Header -->
     <div class="header">
       <img src="logo.png" alt="SOPERA" class="logo" />
@@ -19,7 +34,13 @@
           <path
             d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
         </svg>
-        <svg class="notif-icon" fill="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="notif-icon"
+          onclick="toggleNotifications()"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          role="button">
           <path
             d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
         </svg>
@@ -39,6 +60,20 @@
       <div id="searchResults" class="search-results"></div>
     </div>
 
+    <!-- Notifications panel -->
+    <div id="notifPanel" class="notif-panel hidden" aria-hidden="true">
+      <div class="notif-panel-header">
+        <strong>Notifikasi</strong>
+        <button class="notif-clear" onclick="clearNotifications()">
+          Bersihkan
+        </button>
+      </div>
+      <div id="notifList" class="notif-list"></div>
+      <div class="notif-empty" id="notifEmpty" style="display: none">
+        Belum ada notifikasi
+      </div>
+    </div>
+
     <!-- Main Content -->
     <div class="main-content">
       <!-- Library Tab -->
@@ -46,9 +81,7 @@
         <!-- Hero Section -->
         <div class="hero-section">
           <video class="hero-video" autoplay muted loop>
-            <source
-              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-              type="video/mp4" />
+            <source src="videos/short-25.mp4" type="video/mp4" />
           </video>
           <div class="hero-overlay">
             <div class="hero-title">Cinta di Musim Hujan</div>
@@ -86,10 +119,26 @@
       <!-- Accounts Tab -->
       <div class="accounts-section" id="accountsTab">
         <div class="profile-header">
-          <div class="profile-avatar">A</div>
+          <div class="profile-avatar" id="profileAvatarWrapper">
+            <img
+              id="profileAvatarImg"
+              src="images/avatar-default.jpg"
+              alt="Avatar" />
+          </div>
           <div class="profile-info">
-            <h2>Akun Saya</h2>
-            <p>user@sopera.id</p>
+            <div class="profile-row">
+              <h2 id="profileName">Akun Saya</h2>
+              <button
+                id="editProfileBtn"
+                class="edit-icon"
+                aria-label="Ubah profil"
+                title="Ubah profil">
+                ✎
+              </button>
+            </div>
+            <div class="profile-row">
+              <p id="profileEmail">user@sopera.id</p>
+            </div>
           </div>
         </div>
         <div class="menu-section">
@@ -357,6 +406,72 @@
           <!-- populated by JS -->
         </div>
       </div>
+
+      <!-- Profile Edit Screen -->
+      <div
+        class="settings-section"
+        id="profileEditScreen"
+        style="display: none; padding: 80px 20px 100px">
+        <div class="section-header">
+          <h2>Ubah Profil</h2>
+        </div>
+
+        <form id="profileEditForm" class="profile-edit-form" novalidate>
+          <div
+            class="profile-edit-row"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 16px;
+              margin-bottom: 16px;
+            ">
+            <div
+              class="profile-avatar"
+              id="editAvatarPreview"
+              style="width: 96px; height: 96px">
+              <img
+                id="editAvatarImg"
+                src="images/avatar-default.jpg"
+                alt="Avatar" />
+            </div>
+            <div style="flex: 1">
+              <label
+                for="editAvatarInput"
+                style="display: block; margin-bottom: 6px; font-weight: 600"
+                >Foto Profil</label
+              >
+              <input id="editAvatarInput" type="file" accept="image/*" />
+              <div
+                style="font-size: 13px; color: var(--muted); margin-top: 8px">
+                Unggah foto baru (jpg/png).
+              </div>
+            </div>
+          </div>
+
+          <label class="setting-label" for="editUsername">Nama Pengguna</label>
+          <input
+            id="editUsername"
+            type="text"
+            class="comment-input"
+            placeholder="Nama pengguna" />
+
+          <label class="setting-label" for="editEmail" style="margin-top: 12px"
+            >Email</label
+          >
+          <input
+            id="editEmail"
+            type="email"
+            class="comment-input"
+            placeholder="you@domain.com" />
+
+          <div style="margin-top: 16px; display: flex; gap: 12px">
+            <button type="submit" class="btn-plan">Simpan</button>
+            <button type="button" id="cancelEditProfile" class="btn-info">
+              Batal
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
     <!-- Video Modal -->
     <div class="video-modal" id="videoModal">
@@ -366,43 +481,6 @@
       </div>
       <div class="modal-video-container">
         <video class="modal-video" id="modalVideo" controls></video>
-      </div>
-      <div class="modal-info">
-        <div class="modal-title" id="modalTitle"></div>
-        <div class="modal-meta">
-          <span id="modalYear"></span>
-          <span>•</span>
-          <span id="modalGenre"></span>
-          <span>•</span>
-          <span id="modalDuration"></span>
-        </div>
-        <div class="modal-description" id="modalDescription"></div>
-        <div class="modal-actions">
-          <div class="action-btn" onclick="toggleLike()">
-            <div class="action-btn-icon" id="likeIcon">👍</div>
-            <div class="action-btn-label">Suka</div>
-          </div>
-          <div class="action-btn" onclick="toggleDislike()">
-            <div class="action-btn-icon" id="dislikeIcon">👎</div>
-            <div class="action-btn-label">Tidak Suka</div>
-          </div>
-          <div class="action-btn" onclick="shareVideo()">
-            <div class="action-btn-icon">🔗</div>
-            <div class="action-btn-label">Bagikan</div>
-          </div>
-        </div>
-        <div class="comments-section">
-          <div class="comments-title">Komentar</div>
-          <div class="comment-form">
-            <input
-              type="text"
-              class="comment-input"
-              placeholder="Tulis komentar..."
-              id="commentInput" />
-            <button class="comment-submit" onclick="addComment()">Kirim</button>
-          </div>
-          <div id="commentsList"></div>
-        </div>
       </div>
     </div>
     <!-- Tab Navigation -->
