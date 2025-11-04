@@ -3289,9 +3289,7 @@
           item.description || ""
         }</div>`; // Use translated label
       }
-      const src =
-        item.video ||
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+      const src = item.video || `videos/short-25.mp4`;
       const poster = item.thumb || "";
       if (video) {
         // Set video attributes for TikTok-like behavior
