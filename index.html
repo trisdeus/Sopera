@@ -15,9 +15,14 @@
       aria-label="Cover screen">
       <div class="cover-inner">
         <img src="logo.png" alt="SOPERA" class="cover-logo" />
-        <p class="cover-sub">Streaming. Cerita. Emosi.</p>
-        <button class="cover-enter" aria-label="Masuk ke aplikasi">
-          Ketuk untuk masuk
+        <p class="cover-sub" data-i18n="cover-sub">Streaming. Cerita. Emosi.</p>
+        <button
+          id="coverEnterBtn"
+          class="cover-enter"
+          aria-label="Masuk ke aplikasi">
+          <span id="coverEnterLabel" data-i18n="cover-enter"
+            >Ketuk untuk masuk</span
+          >
         </button>
       </div>
     </div>
@@ -276,16 +281,16 @@
           <h2>Privasi & Keamanan</h2>
         </div>
         <div class="settings-content">
-          <div class="setting-item">
+          <div class="setting-item" onclick="openPrivacySetting('data')">
             <div class="setting-label">Data Pribadi</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openPrivacySetting('contacts')">
             <div class="setting-label">Kontak</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openPrivacySetting('history')">
             <div class="setting-label">Riwayat Aktivitas</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openPrivacySetting('password')">
             <div class="setting-label">Ubah Kata Sandi</div>
           </div>
         </div>
@@ -297,13 +302,13 @@
           <h2>Pembayaran</h2>
         </div>
         <div class="settings-content">
-          <div class="setting-item">
+          <div class="setting-item" onclick="openPaymentSetting('method')">
             <div class="setting-label">Metode Pembayaran</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openPaymentSetting('history')">
             <div class="setting-label">Riwayat Transaksi</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openPaymentSetting('promo')">
             <div class="setting-label">Promo & Kode</div>
           </div>
         </div>
@@ -319,13 +324,13 @@
             <div class="setting-label">Versi Aplikasi</div>
             <div class="setting-description">v1.0.0</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openAboutSetting('privacy')">
             <div class="setting-label">Kebijakan Privasi</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openAboutSetting('terms')">
             <div class="setting-label">Syarat & Ketentuan</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openAboutSetting('contact')">
             <div class="setting-label">Kontak Pengembang</div>
           </div>
         </div>
@@ -337,13 +342,13 @@
           <h2>Bantuan & Dukungan</h2>
         </div>
         <div class="settings-content">
-          <div class="setting-item">
+          <div class="setting-item" onclick="openHelpSetting('center')">
             <div class="setting-label">Pusat Bantuan</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openHelpSetting('contact')">
             <div class="setting-label">Hubungi Kami</div>
           </div>
-          <div class="setting-item">
+          <div class="setting-item" onclick="openHelpSetting('report')">
             <div class="setting-label">Laporkan Masalah</div>
           </div>
         </div>
@@ -393,6 +398,557 @@
               <h3>Kualitas HD</h3>
               <p>Streaming dengan kualitas gambar hingga Full HD.</p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Privacy Data Tab -->
+      <div class="settings-section" id="privacyDataTab" style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-privacy-data">Data Pribadi Saya</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Data yang Dikumpulkan</div>
+            <div class="setting-description">
+              Kami mengumpulkan informasi seperti nama pengguna, alamat email,
+              dan aktivitas penontonan Anda untuk menyediakan layanan yang lebih
+              baik dan personalisasi konten.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Penggunaan Data</div>
+            <div class="setting-description">
+              Data Anda digunakan untuk merekomendasikan film, meningkatkan
+              pengalaman pengguna, dan untuk tujuan analitik internal.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Berbagi Data</div>
+            <div class="setting-description">
+              Kami tidak membagikan data pribadi Anda dengan pihak ketiga tanpa
+              persetujuan Anda, kecuali jika diwajibkan oleh hukum.
+            </div>
+          </div>
+          <div style="margin-top: 20px">
+            <button id="deleteDataBtn" class="btn-plan">Hapus Data Saya</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Contact Settings Tab -->
+      <div
+        class="settings-section"
+        id="contactSettingsTab"
+        style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-contact-settings">Pengaturan Kontak</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Alamat Email</div>
+            <input
+              type="email"
+              class="comment-input"
+              id="contactEmailInput"
+              placeholder="user@sopera.id" />
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Nomor Telepon</div>
+            <input
+              type="tel"
+              class="comment-input"
+              id="contactPhoneInput"
+              placeholder="+62 ..." />
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Terima Email Promosi</div>
+            <label class="switch">
+              <input type="checkbox" id="promoEmailToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Terima Notifikasi Push</div>
+            <label class="switch">
+              <input type="checkbox" id="pushNotifToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Terima Pesan SMS</div>
+            <label class="switch">
+              <input type="checkbox" id="smsToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div style="margin-top: 20px; display: flex; gap: 12px">
+            <button id="saveContactSettingsBtn" class="btn-plan">Simpan</button>
+            <button id="cancelContactSettingsBtn" class="btn-info">
+              Batal
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Activity History Tab -->
+      <div
+        class="settings-section"
+        id="activityHistoryTab"
+        style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-activity-history">Riwayat Aktivitas Saya</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Aktivitas Terbaru</div>
+            <div id="activityListContainer" class="activity-list">
+              <!-- Activity items will be inserted here by JavaScript -->
+              <div class="activity-item">
+                <div class="activity-title">
+                  Menonton "Cinta di Musim Hujan"
+                </div>
+                <div class="activity-time">1 jam yang lalu</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-title">Mengomentari "Momen Spontan"</div>
+                <div class="activity-time">2 jam yang lalu</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-title">Menonton "Hati yang Terluka"</div>
+                <div class="activity-time">Kemarin</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-title">Mencari "Horor"</div>
+                <div class="activity-time">2 hari yang lalu</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 20px">
+            <button id="deleteActivityHistoryBtn" class="btn-plan">
+              Hapus Semua Riwayat
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Change Password Tab -->
+      <div
+        class="settings-section"
+        id="changePasswordTab"
+        style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-change-password">Ubah Kata Sandi</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Kata Sandi Saat Ini</div>
+            <input
+              type="password"
+              class="comment-input"
+              id="currentPasswordInput"
+              placeholder="Masukkan kata sandi lama" />
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Kata Sandi Baru</div>
+            <input
+              type="password"
+              class="comment-input"
+              id="newPasswordInput"
+              placeholder="Masukkan kata sandi baru" />
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Konfirmasi Kata Sandi Baru</div>
+            <input
+              type="password"
+              class="comment-input"
+              id="confirmNewPasswordInput"
+              placeholder="Ulangi kata sandi baru" />
+          </div>
+          <div style="margin-top: 20px; display: flex; gap: 12px">
+            <button id="savePasswordBtn" class="btn-plan">Simpan</button>
+            <button id="cancelPasswordBtn" class="btn-info">Batal</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Payment Method Tab -->
+      <div class="settings-section" id="paymentMethodTab" style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-payment-method">Metode Pembayaran</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Metode Pembayaran Utama</div>
+            <select class="setting-control" id="primaryPaymentSelect">
+              <option value="">Pilih Metode</option>
+              <option value="card">Kartu Kredit/Debit</option>
+              <option value="gopay">GoPay</option>
+              <option value="dana">DANA</option>
+              <option value="ovo">OVO</option>
+              <option value="bank">Transfer Bank</option>
+            </select>
+          </div>
+          <div id="paymentDetailsContainer" style="display: none">
+            <!-- Payment details form will be inserted here by JavaScript based on selection -->
+          </div>
+          <div style="margin-top: 20px; display: flex; gap: 12px">
+            <button id="savePaymentMethodBtn" class="btn-plan">Simpan</button>
+            <button id="cancelPaymentMethodBtn" class="btn-info">Batal</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Transaction History Tab -->
+      <div
+        class="settings-section"
+        id="transactionHistoryTab"
+        style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-transaction-history">
+            Riwayat Transaksi Saya
+          </h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Transaksi Terbaru</div>
+            <div id="transactionListContainer" class="transaction-list">
+              <!-- Transaction items will be inserted here by JavaScript -->
+              <div class="transaction-item">
+                <div class="transaction-title">Pembayaran Premium</div>
+                <div class="transaction-amount">Rp 59.000</div>
+                <div class="transaction-date">15 Nov 2025</div>
+                <div class="transaction-status">Berhasil</div>
+              </div>
+              <div class="transaction-item">
+                <div class="transaction-title">Pembayaran Premium</div>
+                <div class="transaction-amount">Rp 59.000</div>
+                <div class="transaction-date">15 Okt 2025</div>
+                <div class="transaction-status">Berhasil</div>
+              </div>
+              <div class="transaction-item">
+                <div class="transaction-title">Pembayaran Premium</div>
+                <div class="transaction-amount">Rp 59.000</div>
+                <div class="transaction-date">15 Sep 2025</div>
+                <div class="transaction-status">Berhasil</div>
+              </div>
+            </div>
+          </div>
+          <!-- Optional: Add a button to export history, load more, etc. -->
+          <!-- <div style="margin-top: 20px;">
+                        <button id="exportHistoryBtn" class="btn-plan">Ekspor Riwayat</button>
+                      </div> -->
+        </div>
+      </div>
+
+      <!-- New Promo Code Tab -->
+      <div class="settings-section" id="promoCodeTab" style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-promo-code">Masukkan Kode Promo</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Kode Promo</div>
+            <input
+              type="text"
+              class="comment-input"
+              id="promoCodeInput"
+              placeholder="Masukkan kode promo Anda" />
+          </div>
+          <div style="margin-top: 20px; display: flex; gap: 12px">
+            <button id="applyPromoCodeBtn" class="btn-plan">Terapkan</button>
+            <button id="cancelPromoCodeBtn" class="btn-info">Batal</button>
+          </div>
+          <!-- Optional: Display applied promo details -->
+          <div
+            id="appliedPromoContainer"
+            style="display: none; margin-top: 20px">
+            <div class="setting-item">
+              <div class="setting-label">Kode yang Diterapkan:</div>
+              <div
+                class="setting-description"
+                id="appliedPromoCodeDisplay"></div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-label">Diskon:</div>
+              <div
+                class="setting-description"
+                id="appliedPromoDiscountDisplay"></div>
+            </div>
+            <div class="setting-item">
+              <div class="setting-label">Berlaku Hingga:</div>
+              <div
+                class="setting-description"
+                id="appliedPromoExpiryDisplay"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Privacy Policy Tab -->
+      <div class="settings-section" id="privacyPolicyTab" style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-privacy-policy">Kebijakan Privasi</h2>
+        </div>
+        <div class="settings-content" id="privacyPolicyContent">
+          <!-- Privacy Policy Content will be inserted here by JavaScript or directly in HTML -->
+          <div class="setting-item">
+            <div class="setting-label">Tanggal Berlaku:</div>
+            <div class="setting-description">5 November 2025</div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">1. Informasi yang Kami Kumpulkan</div>
+            <div class="setting-description">
+              Kami mengumpulkan informasi berikut:
+              <ul>
+                <li>Nama pengguna dan alamat email saat pendaftaran.</li>
+                <li>Informasi aktivitas penontonan Anda di aplikasi.</li>
+                <li>Data perangkat dan log akses untuk tujuan teknis.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">2. Penggunaan Informasi</div>
+            <div class="setting-description">
+              Informasi yang kami kumpulkan digunakan untuk:
+              <ul>
+                <li>Menyediakan dan meningkatkan layanan streaming.</li>
+                <li>Menyesuaikan pengalaman pengguna.</li>
+                <li>
+                  Mengirimkan pembaruan dan promosi (jika Anda menyetujui).
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">3. Berbagi Informasi</div>
+            <div class="setting-description">
+              Kami tidak akan menjual, menyewakan, atau membagikan informasi
+              pribadi Anda kepada pihak ketiga tanpa persetujuan Anda, kecuali
+              sebagaimana dijelaskan dalam kebijakan ini atau diwajibkan oleh
+              hukum.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">4. Keamanan Data</div>
+            <div class="setting-description">
+              Kami menerapkan berbagai langkah keamanan untuk menjaga keamanan
+              informasi pribadi Anda saat Anda memasukkan, mengirimkan, atau
+              mengakses informasi tersebut.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">5. Hak Anda</div>
+            <div class="setting-description">
+              Anda memiliki hak untuk:
+              <ul>
+                <li>
+                  Mengakses informasi pribadi yang kami miliki tentang Anda.
+                </li>
+                <li>Memperbarui atau mengoreksi informasi pribadi Anda.</li>
+                <li>Meminta penghapusan informasi pribadi Anda.</li>
+                <li>Menarik kembali persetujuan Anda (jika relevan).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">6. Perubahan Kebijakan</div>
+            <div class="setting-description">
+              Kami dapat memperbarui Kebijakan Privasi ini. Kami akan memberi
+              tahu Anda tentang perubahan penting dengan memposting kebijakan
+              yang diperbarui di aplikasi ini.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">7. Hubungi Kami</div>
+            <div class="setting-description">
+              Jika Anda memiliki pertanyaan tentang Kebijakan Privasi ini,
+              silakan hubungi kami di
+              <a href="mailto:privacy@sopera.id">privacy@sopera.id</a>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Terms and Conditions Tab -->
+      <div
+        class="settings-section"
+        id="termsAndConditionsTab"
+        style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-terms-conditions">Syarat & Ketentuan</h2>
+        </div>
+        <div class="settings-content" id="termsAndConditionsContent">
+          <!-- Terms and Conditions Content will be inserted here by JavaScript or directly in HTML -->
+          <div class="setting-item">
+            <div class="setting-label">Tanggal Berlaku:</div>
+            <div class="setting-description">5 November 2025</div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">1. Penerimaan Syarat</div>
+            <div class="setting-description">
+              Dengan mengakses dan menggunakan aplikasi Sopera ("Aplikasi"),
+              Anda ("Pengguna") setuju untuk terikat oleh dan mematuhi Syarat &
+              Ketentuan ("Syarat") ini. Jika Anda tidak setuju dengan Syarat
+              ini, Anda tidak diperkenankan menggunakan Aplikasi.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">2. Penggunaan Aplikasi</div>
+            <div class="setting-description">
+              Anda setuju untuk menggunakan Aplikasi secara bertanggung jawab
+              dan hanya untuk tujuan yang sah. Dilarang keras menggunakan
+              Aplikasi untuk tujuan ilegal, menyalahgunakan, atau merusak.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">3. Akun Pengguna</div>
+            <div class="setting-description">
+              Untuk mengakses fitur tertentu, Anda mungkin perlu membuat akun.
+              Anda bertanggung jawab untuk menjaga kerahasiaan informasi akun
+              Anda dan segala aktivitas yang terjadi di bawah akun tersebut.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">4. Hak Kekayaan Intelektual</div>
+            <div class="setting-description">
+              Semua konten, fitur, dan teknologi dalam Aplikasi dilindungi oleh
+              hak cipta, merek dagang, dan hak kekayaan intelektual lainnya
+              milik Sopera atau pihak ketiga yang diberikan lisensi. Anda tidak
+              diperkenankan untuk menyalin, mendistribusikan, atau membuat karya
+              turunan tanpa izin tertulis.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">5. Penolakan Jaminan</div>
+            <div class="setting-description">
+              Aplikasi disediakan "sebagaimana adanya" tanpa jaminan apa pun,
+              secara tegas maupun tersirat, termasuk namun tidak terbatas pada
+              jaminan terhadap hak milik, tidak adanya pelanggaran, atau
+              kesesuaian untuk tujuan tertentu.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">6. Batasan Tanggung Jawab</div>
+            <div class="setting-description">
+              Dalam hal apa pun, Sopera tidak akan bertanggung jawab atas
+              kerusakan tidak langsung, insidental, khusus, konsekuensial, atau
+              hukuman yang timbul dari penggunaan atau ketidakmampuan
+              menggunakan Aplikasi, bahkan jika Sopera telah diberitahu mengenai
+              kemungkinan kerusakan tersebut.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">7. Perubahan Syarat</div>
+            <div class="setting-description">
+              Sopera berhak untuk mengubah Syarat ini kapan saja. Perubahan akan
+              diinformasikan melalui Aplikasi. Penggunaan Aplikasi secara
+              terus-menerus setelah perubahan berarti Anda menerima Syarat yang
+              diperbarui.
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">8. Hukum yang Berlaku</div>
+            <div class="setting-description">
+              Syarat ini tunduk pada hukum yang berlaku di Indonesia.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Developer Contact Tab -->
+      <div
+        class="settings-section"
+        id="developerContactTab"
+        style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-developer-contact">Kontak Pengembang</h2>
+        </div>
+        <div class="settings-content" id="developerContactContent">
+          <!-- Developer Contact Content will be inserted here by JavaScript or directly in HTML -->
+          <div class="setting-item">
+            <div class="setting-label">Email</div>
+            <div class="setting-description">
+              <a href="mailto:dev@sopera.id">dev@sopera.id</a>
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Alamat</div>
+            <div class="setting-description">
+              Jl. Contoh Alamat No. 123, Kota Contoh, Provinsi Contoh, 12345
+            </div>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Media Sosial</div>
+            <div class="setting-description">
+              <a href="https://twitter.com/sopera_dev" target="_blank"
+                >@sopera_dev</a
+              >
+              (Twitter)<br />
+              <a href="https://www.instagram.com/sopera_dev/" target="_blank"
+                >@sopera_dev</a
+              >
+              (Instagram)
+            </div>
+          </div>
+          <!-- Optional: Add a simple contact form -->
+          <!--
+                              <div class="setting-item" style="margin-top: 20px;">
+                                <div class="setting-label">Kirim Pesan</div>
+                                <textarea class="comment-input" id="contactMessageInput" placeholder="Tulis pesan Anda..." rows="4"></textarea>
+                                <button id="sendContactMessageBtn" class="btn-plan" style="margin-top: 10px;">Kirim</button>
+                              </div>
+                              -->
+        </div>
+      </div>
+
+      <!-- New Report Issue Tab -->
+      <div class="settings-section" id="reportIssueTab" style="display: none">
+        <div class="section-header">
+          <h2 id="section-header-report-issue">Laporkan Masalah</h2>
+        </div>
+        <div class="settings-content">
+          <div class="setting-item">
+            <div class="setting-label">Kategori Masalah</div>
+            <select class="setting-control" id="issueCategorySelect">
+              <option value="">Pilih Kategori</option>
+              <option value="video_error">Gangguan Video</option>
+              <option value="audio_error">Gangguan Audio</option>
+              <option value="app_crash">Aplikasi Crash</option>
+              <option value="login_problem">Masalah Login</option>
+              <option value="payment_issue">Masalah Pembayaran</option>
+              <option value="content_request">Permintaan Konten</option>
+              <option value="other">Lainnya</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Deskripsi Masalah</div>
+            <textarea
+              class="comment-input"
+              id="issueDescriptionInput"
+              placeholder="Jelaskan masalah yang Anda alami secara detail..."
+              rows="5"></textarea>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">
+              Langkah-langkah untuk Mereproduksi (Opsional)
+            </div>
+            <textarea
+              class="comment-input"
+              id="reproduceStepsInput"
+              placeholder="Langkah-langkah yang Anda lakukan sebelum masalah muncul..."
+              rows="3"></textarea>
+          </div>
+          <div class="setting-item">
+            <div class="setting-label">Kirim Bukti (Opsional)</div>
+            <input type="file" id="issueScreenshotInput" accept="image/*" />
+            <div style="font-size: 13px; color: var(--muted); margin-top: 8px">
+              Unggah tangkapan layar atau file terkait (jpg/png).
+            </div>
+          </div>
+          <div style="margin-top: 20px; display: flex; gap: 12px">
+            <button id="submitIssueBtn" class="btn-plan">Kirim Laporan</button>
+            <button id="cancelIssueBtn" class="btn-info">Batal</button>
           </div>
         </div>
       </div>

@@ -1396,3 +1396,80 @@ body.cover-open {
   min-height: calc(100vh - 60px);
   padding-top: 80px;
 }
+
+/* Activity History Styles */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.activity-title {
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.activity-time {
+  font-size: 14px;
+  opacity: 0.7;
+  text-align: right;
+}
+
+/* Transaction History Styles */
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.transaction-title {
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.transaction-amount {
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 15px;
+}
+
+.transaction-date {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-right: 15px;
+}
+
+.transaction-status {
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.transaction-status.berhasil {
+  background: rgba(76, 175, 80, 0.2); /* Green */
+  color: #4caf50;
+}
+
+.transaction-status.gagal {
+  background: rgba(244, 67, 54, 0.2); /* Red */
+  color: #f44336;
+}
